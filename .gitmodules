@@ -1,0 +1,3 @@
+[submodule "Packages/Antler/extra/8a8dd215-b7ce-4477-acc7-79e1b60a3ee1/antler-revit"]
+	path = Packages/Antler/extra/8a8dd215-b7ce-4477-acc7-79e1b60a3ee1/antler-revit
+	url = https://github.com/tothom/antler-revit.git
