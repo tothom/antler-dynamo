@@ -1,0 +1,20 @@
+{
+	"license": "",
+	"file_hash": null,
+	"name": "Antler for Dynamo",
+	"version": "0.1.0",
+	"description": "A collection of Dynamo nodes including Extract surfaces with materials, ReferenceIntersector to get elements in model from a point and search direction and planar surface intersection.",
+	"group": "",
+	"keywords": [
+		""
+	],
+	"dependencies": [],
+	"contents": "",
+	"engine_version": "2.3.1.11830",
+	"engine": "dynamo",
+	"engine_metadata": "",
+	"site_url": "https://github.com/tothom/antler-dynamo",
+	"repository_url": "https://github.com/tothom/antler-dynamo",
+	"contains_binaries": false,
+	"node_libraries": []
+}
