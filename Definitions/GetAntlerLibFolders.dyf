@@ -1,0 +1,303 @@
+{
+  "Uuid": "f6b9726f-39c0-44f5-90a3-95df5ccdc935",
+  "IsCustomNode": true,
+  "Category": "Antler.Utilities",
+  "Description": "Utility function to return the library folder for the Antler package. This folder contains python libraries necessary to run some its components.",
+  "Name": "GetAntlerLibFolders",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "CoordinateSystem": {
+        "Key": "Autodesk.DesignScript.Geometry.CoordinateSystem",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Plane": {
+        "Key": "Autodesk.DesignScript.Geometry.Plane",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "3278047b-a8c5-4b07-84cf-86d659b2b420",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "2bcdeb0e6fd74c8f857e18fcbef0f855",
+      "Inputs": [
+        {
+          "Id": "1472d9c8212440fcbb24a6d047adb30e",
+          "Name": "folder",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e30b2614ef534cff817bbb940161bd1e",
+          "Name": "subfolder_name",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1a7eb242200d46e0b785c64effb1d348",
+          "Name": "folders",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Finds subfolders in input folder with given name. "
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"8a8dd215-b7ce-4477-acc7-79e1b60a3ee1\";",
+      "Id": "f72890f7c0244ddabcd406968ffb9673",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d49e752bfea543baa409ab0511bfbf30",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "9a434719-b831-4fc8-952d-45b495228d1d",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "c31f99bf55024a58840f7152f54276be",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "909410e576c04409b07fc05586cd6bdd",
+          "Name": "folders",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Gets all custom package folders stored in DynamoSettings.xml."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "folder",
+      "Id": "7d66920f8e62452281936b28e9f5ce49",
+      "Inputs": [
+        {
+          "Id": "1240e3e3b3d549908326ee0897cf9ebf",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "a[0];",
+      "Id": "72a3d6b532f94af6b885faca2e17d9b2",
+      "Inputs": [
+        {
+          "Id": "ebfc0e39f0dd400b9bb398f7674af4ae",
+          "Name": "a",
+          "Description": "a",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "30591ff96dd4484baaa2e551a2c477ac",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"antler-revit\";",
+      "Id": "4576e656b7144247ab3fc84a5e7bb1cb",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "78973f326dcd42f88f019303e5e47333",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "1a7eb242200d46e0b785c64effb1d348",
+      "End": "ebfc0e39f0dd400b9bb398f7674af4ae",
+      "Id": "8b551b905e8e4d249c2cb61b3ec680f4"
+    },
+    {
+      "Start": "909410e576c04409b07fc05586cd6bdd",
+      "End": "1472d9c8212440fcbb24a6d047adb30e",
+      "Id": "6e8de890e8c0403d97f5d70cd7c26d52"
+    },
+    {
+      "Start": "30591ff96dd4484baaa2e551a2c477ac",
+      "End": "1240e3e3b3d549908326ee0897cf9ebf",
+      "Id": "2b8c5a31368344d683ffb7aa53d07b8a"
+    },
+    {
+      "Start": "78973f326dcd42f88f019303e5e47333",
+      "End": "e30b2614ef534cff817bbb940161bd1e",
+      "Id": "341390b40b264039880b80aebc1adc63"
+    }
+  ],
+  "Dependencies": [
+    "3278047b-a8c5-4b07-84cf-86d659b2b420",
+    "9a434719-b831-4fc8-952d-45b495228d1d"
+  ],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "FindSubfoldersByName",
+        "Id": "2bcdeb0e6fd74c8f857e18fcbef0f855",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 716.48569361212185,
+        "Y": 23.937395025591229
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "f72890f7c0244ddabcd406968ffb9673",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 110.72250304159485
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "DynamoCustomPackageFolders",
+        "Id": "c31f99bf55024a58840f7152f54276be",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 390.50548285876886,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "7d66920f8e62452281936b28e9f5ce49",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1265.4471921510635,
+        "Y": 2.634993824371179
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "72a3d6b532f94af6b885faca2e17d9b2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1048.3629147763224,
+        "Y": 35.367097574935
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "4576e656b7144247ab3fc84a5e7bb1cb",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 486.0390851133053,
+        "Y": 229.58201513369181
+      }
+    ],
+    "Annotations": [],
+    "X": -414.63873267738131,
+    "Y": 99.6797407926775,
+    "Zoom": 0.9487688270376049
+  }
+}

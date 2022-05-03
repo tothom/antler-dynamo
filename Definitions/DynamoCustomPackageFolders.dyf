@@ -1,0 +1,135 @@
+{
+  "Uuid": "9a434719-b831-4fc8-952d-45b495228d1d",
+  "IsCustomNode": true,
+  "Category": "Antler.Utilities",
+  "Description": "Gets all custom package folders stored in DynamoSettings.xml.",
+  "Name": "DynamoCustomPackageFolders",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "CoordinateSystem": {
+        "Key": "Autodesk.DesignScript.Geometry.CoordinateSystem",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Plane": {
+        "Key": "Autodesk.DesignScript.Geometry.Plane",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import os\r\n\r\nfrom System.Reflection import Assembly\r\n\r\nimport xml.etree.ElementTree as etree\r\n\r\n\r\n\r\ndynamo_version = Assembly.Load('DynamoCore').GetName().Version\r\n\r\ndynamo_settings_path = os.path.join(\r\n\tos.getenv('appdata'),\r\n\t\"Dynamo\\\\Dynamo Revit\",\r\n\t\"{}.{}\".format(dynamo_version.Major, dynamo_version.Minor),\r\n\t\"DynamoSettings.xml\"\r\n\t)\r\n\t\r\n\r\nwith open(dynamo_settings_path, 'rb') as f:\r\n\ttree = etree.parse(f)\r\n\troot = tree.getroot()\r\n\r\n\tcustom_package_folders = [e.text for e in root.findall(\r\n\t\t'CustomPackageFolders/string')]\r\n\r\n\r\nOUT = custom_package_folders",
+      "VariableInputPorts": true,
+      "Id": "7d11ca4c0e2b4d75aeea349e3b55058e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "96ec973c991a4ced993982a8f03ee089",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "folders",
+      "Id": "80dfb00c3b1a47379f4db147688f94b0",
+      "Inputs": [
+        {
+          "Id": "6db21f2622c04c109e13193ad0122bf5",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "96ec973c991a4ced993982a8f03ee089",
+      "End": "6db21f2622c04c109e13193ad0122bf5",
+      "Id": "1f16ff8cb4894e8eaee39014e302c116"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "7d11ca4c0e2b4d75aeea349e3b55058e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "80dfb00c3b1a47379f4db147688f94b0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 419.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+}

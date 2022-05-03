@@ -1,0 +1,236 @@
+{
+  "Uuid": "3278047b-a8c5-4b07-84cf-86d659b2b420",
+  "IsCustomNode": true,
+  "Category": "Antler.Utilities",
+  "Description": "Finds subfolders in input folder with given name. ",
+  "Name": "FindSubfoldersByName",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "CoordinateSystem": {
+        "Key": "Autodesk.DesignScript.Geometry.CoordinateSystem",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Plane": {
+        "Key": "Autodesk.DesignScript.Geometry.Plane",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\n#import sys\r\nimport os\r\n#import clr\r\n\r\npaths = IN[0]\r\nsubfolder = IN[1]\r\n\r\n\r\n\r\ndef find_subfolder(path, subfolder):\r\n\tfor root, dirs, files in os.walk(path):\r\n\t\tif subfolder in dirs:\r\n\t\t\tyield os.path.join(root, subfolder)\r\n\r\n\r\nfound_paths = []\r\n\r\n\r\nif isinstance(paths, (list, tuple)):\r\n\t[found_paths.extend(find_subfolder(path, subfolder)) for path in paths]\r\nelse:\r\n\tfound_paths.append(find_subfolder(paths, subfolder))\r\n\r\n\r\n\r\n\r\nOUT = found_paths",
+      "VariableInputPorts": true,
+      "Id": "da8cb3846d1c4c728fb1a903011df13a",
+      "Inputs": [
+        {
+          "Id": "d9c9ffa7ab944dd3a4dc0c9511b4e304",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b028cad9920d448a927261192d9b0655",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "a0c3f66a1984453b8db2aa8890613726",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "folder",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "e667d1c0f45b44aaa1d3ee4b5aea59cd",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "caf0840af8c44f59840ead88378bbcb9",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "subfolder_name",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "8855fc0157494c8582bd8faa55a22b6e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c19efdb5401d4076b7ea825b8c4d5e63",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "folders",
+      "Id": "70a45a6433dc49b0b7053bc20e21dcb2",
+      "Inputs": [
+        {
+          "Id": "9a85bf6c5bbd48318cbb714156ea4f6a",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "a0c3f66a1984453b8db2aa8890613726",
+      "End": "9a85bf6c5bbd48318cbb714156ea4f6a",
+      "Id": "1d8e345b9dbd41e6b2f9dd19110ed5cf"
+    },
+    {
+      "Start": "caf0840af8c44f59840ead88378bbcb9",
+      "End": "d9c9ffa7ab944dd3a4dc0c9511b4e304",
+      "Id": "a1d60f40b59f4bf683082cd1f0559068"
+    },
+    {
+      "Start": "c19efdb5401d4076b7ea825b8c4d5e63",
+      "End": "b028cad9920d448a927261192d9b0655",
+      "Id": "1782e4d5261744e2bd2ff765dc7d920b"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "da8cb3846d1c4c728fb1a903011df13a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "e667d1c0f45b44aaa1d3ee4b5aea59cd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "8855fc0157494c8582bd8faa55a22b6e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 150.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "70a45a6433dc49b0b7053bc20e21dcb2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.5,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+}
