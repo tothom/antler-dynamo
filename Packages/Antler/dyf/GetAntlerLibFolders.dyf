@@ -216,7 +216,7 @@
     "Dynamo": {
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
-      "IsVisibleInDynamoLibrary": true,
+      "IsVisibleInDynamoLibrary": false,
       "Version": "2.3.0.5885",
       "RunType": "Manual",
       "RunPeriod": "1000"
