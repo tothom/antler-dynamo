@@ -99,37 +99,6 @@
       "Description": "Runs an embedded IronPython script."
     },
     {
-      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
-      "FunctionSignature": "a446efa3-02b0-4c15-a07a-2c445a039422",
-      "FunctionType": "Graph",
-      "NodeType": "FunctionNode",
-      "Id": "66bf20fc16e841cfb3748c2b024f54db",
-      "Inputs": [
-        {
-          "Id": "e3524629fcae4db5bd01969e3e804551",
-          "Name": "Id",
-          "Description": "var[]..[]",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [
-        {
-          "Id": "43cd4f80d27f46778160ba758f632370",
-          "Name": "Element",
-          "Description": "return value",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Auto",
-      "Description": "Get elements from element ID"
-    },
-    {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
       "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef function(element):\r\n\tif isinstance(element, (list, tuple)):\r\n\t\treturn [function(e) for e in element]\r\n\telse:\r\n\t\t# Code follows here:\r\n\t\t#element = UnwrapElement(element)\r\n\t\tif element:\r\n\t\t\treturn element.MaterialElementId\r\n\r\nOUT = function(elements)",
@@ -351,6 +320,35 @@
       ],
       "Replication": "Disabled",
       "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.ElementById, DSRevitNodesUI",
+      "NodeType": "ExtensionNode",
+      "Id": "19274b6fd6b7444e8aabdad0a4e9459d",
+      "Inputs": [
+        {
+          "Id": "3c97010848a24772b3b21913088bcda3",
+          "Name": "Id",
+          "Description": "Element Id as string, int or ElementId",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "81cdfcf8518d4132a0a35f9704980757",
+          "Name": "Element",
+          "Description": "The list of elements matching the query.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Gets the Element with the specified Id"
     }
   ],
   "Connectors": [
@@ -360,14 +358,9 @@
       "Id": "d7e5229d930043ddaf1c729678e32769"
     },
     {
-      "Start": "43cd4f80d27f46778160ba758f632370",
-      "End": "ac9746d91de44c31bff59d97bc9f6885",
-      "Id": "bf79b3325a644b439ba8321cce96c509"
-    },
-    {
       "Start": "0cee752260d840c0b0983206979985d7",
-      "End": "e3524629fcae4db5bd01969e3e804551",
-      "Id": "64d1846ecb6d4a44857785c55cb0ffb3"
+      "End": "3c97010848a24772b3b21913088bcda3",
+      "Id": "75000b2c043c4bd69b9c1e0b7972ff91"
     },
     {
       "Start": "ebc2e95ea3c14dfba5e2df9617cf335f",
@@ -398,11 +391,14 @@
       "Start": "4740c53eecb440a39b5ecd578881b947",
       "End": "0861f78c66af444585681abf074b1b5a",
       "Id": "cdb04b19afa443e38b001887d9a4c9be"
+    },
+    {
+      "Start": "81cdfcf8518d4132a0a35f9704980757",
+      "End": "ac9746d91de44c31bff59d97bc9f6885",
+      "Id": "57dcb1d1791e4aa29ff25b0ec9654097"
     }
   ],
-  "Dependencies": [
-    "a446efa3-02b0-4c15-a07a-2c445a039422"
-  ],
+  "Dependencies": [],
   "NodeLibraryDependencies": [],
   "Bindings": [],
   "View": {
@@ -410,21 +406,21 @@
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.3.0.5885",
+      "Version": "2.6.1.8786",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 35329.56663369028,
-      "EyeY": 2647.060661237148,
-      "EyeZ": -2182.500737698284,
-      "LookX": 409.87672568471788,
-      "LookY": -1297.060661237148,
-      "LookZ": -992.499262301716,
-      "UpX": 0.23500140945115625,
-      "UpY": 0.78801075360672268,
-      "UpZ": -0.56904603483034355
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
     },
     "NodeViews": [
       {
@@ -434,18 +430,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 861.30696251483369,
-        "Y": 202.72731482484522
-      },
-      {
-        "ShowGeometry": false,
-        "Name": "Element from ID",
-        "Id": "66bf20fc16e841cfb3748c2b024f54db",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 858.91800206904577,
-        "Y": 497.93804885407832
+        "X": 785.76422437820042,
+        "Y": 209.59483647363004
       },
       {
         "ShowGeometry": false,
@@ -504,8 +490,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 629.18907995110453,
-        "Y": 28.577495626211373
+        "X": 551.357167931543,
+        "Y": -191.18319713490368
       },
       {
         "ShowGeometry": false,
@@ -524,13 +510,23 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": -81.448970086154077,
-        "Y": 448.61362160610452
+        "X": -334.40268414972923,
+        "Y": 423.43270889389339
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Element By Id",
+        "Id": "19274b6fd6b7444e8aabdad0a4e9459d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 964.74873494624308,
+        "Y": 521.91287897498171
       }
     ],
     "Annotations": [],
-    "X": 180.12061705670959,
-    "Y": -51.983604275056166,
+    "X": -184.87938294329041,
+    "Y": 114.01639572494383,
     "Zoom": 0.8736776244544715
   }
 }
