@@ -60,7 +60,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import clr\n\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\n# Import ToDSType(bool) extension method\nclr.AddReference(\"RevitNodes\")\nimport Revit\nclr.ImportExtensions(Revit.Elements)\nclr.ImportExtensions(Revit.GeometryConversion)\n\n# Import Revit UI\nclr.AddReference('RevitAPIUI')\nfrom Autodesk.Revit.UI import *\n#from Autodesk.Revit.UI.Selection import *\n\nimport sys\n\n#The inputs to this node will be stored as a list in the IN variables.\ndoc = DocumentManager.Instance.CurrentDBDocument\n\nids = IN[0]\n\ndef function(element_id):\n\tif isinstance(element_id, (list, tuple)):\n\t\treturn [function(e) for e in element_id]\n\telse:\n\t\t# Code follows here:\n\t\t#element = UnwrapElement(element)\n\t\tif element_id:\n\t\t\telement = doc.GetElement(element_id)\n\t\t\treturn element\n\nOUT = function(ids)",
+      "Code": "import clr\n\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\nimport sys\n\n#The inputs to this node will be stored as a list in the IN variables.\ndoc = DocumentManager.Instance.CurrentDBDocument\n\nids = IN[0]\n\ndef function(element_id):\n\tif isinstance(element_id, (list, tuple)):\n\t\treturn [function(e) for e in element_id]\n\telse:\n\t\t# Code follows here:\n\t\t#element = UnwrapElement(element)\n\t\tif element_id:\n\t\t\telement = doc.GetElement(element_id)\n\t\t\treturn element\n\nOUT = function(ids)",
       "VariableInputPorts": true,
       "Id": "5d842c6b493e40db950247a4976b458a",
       "Inputs": [
@@ -109,21 +109,21 @@
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.3.0.5885",
+      "Version": "2.6.1.8786",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 35329.56663369028,
-      "EyeY": 2647.060661237148,
-      "EyeZ": -2182.500737698284,
-      "LookX": 409.87672568471788,
-      "LookY": -1297.060661237148,
-      "LookZ": -992.499262301716,
-      "UpX": 0.23500140945115625,
-      "UpY": 0.78801075360672268,
-      "UpZ": -0.56904603483034355
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
     },
     "NodeViews": [
       {
