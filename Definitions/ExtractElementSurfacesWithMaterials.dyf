@@ -1,0 +1,536 @@
+{
+  "Uuid": "74ebf29a-1d81-4c7d-a346-719acdd14cf7",
+  "IsCustomNode": true,
+  "Category": "Antler.Revit.Elements.Element.Query",
+  "Description": "Extracts surfaces from input element with a parallel list of materials.",
+  "Name": "ExtractElementSurfacesWithMaterials",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      },
+      "Surface": {
+        "Key": "Autodesk.DesignScript.Geometry.Surface",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Line": {
+        "Key": "Autodesk.DesignScript.Geometry.Line",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector.XAxis": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox.union": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox.MinPoint": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "BoundingBox": {
+        "Key": "Autodesk.DesignScript.Geometry.BoundingBox",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "CoordinateSystem": {
+        "Key": "Autodesk.DesignScript.Geometry.CoordinateSystem",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "View": {
+        "Key": "Revit.Elements.Views.View",
+        "Value": "RevitNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef function(element):\r\n\tif isinstance(element, (list, tuple)):\r\n\t\treturn [function(e) for e in element]\r\n\telse:\r\n\t\t# Code follows here:\r\n\t\t#element = UnwrapElement(element)\r\n\t\t\r\n\t\treturn element.Convert()\r\n\r\nOUT = function(elements)",
+      "VariableInputPorts": true,
+      "Id": "328964fdcb0d481e8ceef32260a054d7",
+      "Inputs": [
+        {
+          "Id": "a24dc7e858854685980577eec1836af7",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "53739ab4120b4ab6abb0d22f24af8867",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "a446efa3-02b0-4c15-a07a-2c445a039422",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "66bf20fc16e841cfb3748c2b024f54db",
+      "Inputs": [
+        {
+          "Id": "e3524629fcae4db5bd01969e3e804551",
+          "Name": "Id",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "43cd4f80d27f46778160ba758f632370",
+          "Name": "Element",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Get elements from element ID"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef function(element):\r\n\tif isinstance(element, (list, tuple)):\r\n\t\treturn [function(e) for e in element]\r\n\telse:\r\n\t\t# Code follows here:\r\n\t\t#element = UnwrapElement(element)\r\n\t\tif element:\r\n\t\t\treturn element.MaterialElementId\r\n\r\nOUT = function(elements)",
+      "VariableInputPorts": true,
+      "Id": "61df7ce714f545a5b09176136b138c39",
+      "Inputs": [
+        {
+          "Id": "83549b2dabaf42aba84642393eb235c6",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "0cee752260d840c0b0983206979985d7",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "element",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "cbab9786402843d5bf761a70e0af9eb5",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "ebc2e95ea3c14dfba5e2df9617cf335f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "0f7e06f97417405ba2a54d6ae35cb387",
+      "Inputs": [
+        {
+          "Id": "44561805423d40269a258bf14220b0ce",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "aca59f11dfc84960ac48d98f8f91d853",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "surfaces",
+      "Id": "291239c3604349ecbdeac027f0b2615c",
+      "Inputs": [
+        {
+          "Id": "53a2bd6f9be24e4ebbcc2339d57d80c9",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "materials",
+      "Id": "75a68f0d6608492393d460d4def6e50d",
+      "Inputs": [
+        {
+          "Id": "ac9746d91de44c31bff59d97bc9f6885",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "1fedb64237014795a95d83b5ab61768d",
+      "Inputs": [
+        {
+          "Id": "8dcfa527d81143ddba3cfbf378dd355b",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "782b118aca544c948044f5a60bae003e",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\n\nclr.AddReference('ProtoGeometry')\nfrom Autodesk.DesignScript.Geometry import *\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit.DB import *\n\n# Import DocumentManager and TransactionManager\nclr.AddReference(\"RevitServices\")\nimport RevitServices\nfrom RevitServices.Persistence import DocumentManager\nfrom RevitServices.Transactions import TransactionManager\n\n# Import ToDSType(bool) extension method\nclr.AddReference(\"RevitNodes\")\nimport Revit\nclr.ImportExtensions(Revit.Elements)\nclr.ImportExtensions(Revit.GeometryConversion)\n\n# Import RevitAPI\nclr.AddReference(\"RevitAPI\")\nimport Autodesk\nfrom Autodesk.Revit import DB\n\nimport traceback\n\n# Import Revit UI\n#clr.AddReference('RevitAPIUI')\n#from Autodesk.Revit.UI import *\n#from Autodesk.Revit.UI.Selection import *\n\nfrom Autodesk.DesignScript.Geometry import *\n\n#The inputs to this node will be stored as a list in the IN variables.\ninput = IN[0]\nview = UnwrapElement(IN[1])\n\n\ndef get_instance_faces(instance, **attrs):\n\toptions = DB.Options()\n\n\tfor attr, value in attrs.items():\n\t\tsetattr(options, attr, value)\n\n\tfaces = []\n\t\n\tgeometry_element = instance.get_Geometry(options)\n\t\n\tfor geometry_object in geometry_element:\n\t\tgeometry_instance = clr.Convert(geometry_object, DB.GeometryInstance)\n\t\t\n\t\tif geometry_instance:\n\t\t\tinstance_geometry = geometry_instance.GetInstanceGeometry()\n\t\t\t\n\t\t\tfaces.append(extract_faces(instance_geometry))\n\t\n\treturn faces\n\t\ndef get_type_faces(element_type, **attrs):\n\toptions = DB.Options()\n\n\tfor attr, value in attrs.items():\n\t\tsetattr(options, attr, value)\n\n\tfaces = []\n\t\n\tgeometry_element = element_type.get_Geometry(options)\n\t\n\tfaces = extract_faces(geometry_element)\n\t\n\treturn faces\n\t\n\ndef valid_solid_filter(geometry_object):\n    if isinstance(geometry_object, DB.Solid) and\\\n    \tgeometry_object.Faces.Size > 0 and\\\n    \tgeometry_object.Edges.Size > 0 and\\\n    \tgeometry_object.Volume > 0:\n        return True\n\n\ndef extract_faces(geometry_element):\n\tfaces = []\n\t\n\tfor geometry in geometry_element:\n\t\tgeometry_element_faces = []\n\t\t\n\t\tif valid_solid_filter(geometry):\n\t\t\tgeometry_element_faces.append(geometry.Faces)\n\t\t\n\t\tif geometry_element_faces:\n\t\t\tfaces.append(geometry_element_faces)\n\t\t\t\n\treturn faces\n\t\n\t\n            \n\n\n\n\ndef get_element_faces(element, **attrs):\n\toptions = DB.Options()\n\n\tfor attr, value in attrs.items():\n\t\tsetattr(options, attr, value)\n\n\tfaces = []\n\t\n\tgeometry_element = element.get_Geometry(options)\n\t\n\tif isinstance(element, DB.ElementType):\n\t\tfaces = extract_faces(geometry_element)\n\telse:\n\t\tfor geometry_object in geometry_element:\n\t\t\tgeometry_instance = clr.Convert(geometry_object, DB.GeometryInstance)\n\t\t\t\n\t\t\tif geometry_instance:\n\t\t\t\tinstance_geometry = geometry_instance.GetInstanceGeometry()\n\t\t\t\t\n\t\t\t\tfaces.append(extract_faces(instance_geometry))\n\t\n\treturn faces\t\t\n\nattrs = {}\n\nif view:\n\tattrs['View'] = view\n\nif isinstance(input, list):\n    faces = [get_element_faces(UnwrapElement(a), **attrs) for a in input]\nelif input is None:\n\tfaces = []\nelse:\n    faces = get_element_faces(UnwrapElement(input), **attrs)\n\n\nOUT = faces",
+      "VariableInputPorts": true,
+      "Id": "94d58625d2334e508170832033cd26ac",
+      "Inputs": [
+        {
+          "Id": "7a8c8d88d95744b7b2ab47975f0dc15a",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0861f78c66af444585681abf074b1b5a",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c5c596e5b92740768b6ff329f3270721",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "optional_view",
+        "TypeName": "Revit.Elements.Views.View",
+        "TypeRank": 0,
+        "DefaultValue": "null",
+        "Description": ""
+      },
+      "Id": "ba8694c07de94ffeba7ccdfdb3e644ca",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "4740c53eecb440a39b5ecd578881b947",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "53739ab4120b4ab6abb0d22f24af8867",
+      "End": "53a2bd6f9be24e4ebbcc2339d57d80c9",
+      "Id": "d7e5229d930043ddaf1c729678e32769"
+    },
+    {
+      "Start": "43cd4f80d27f46778160ba758f632370",
+      "End": "ac9746d91de44c31bff59d97bc9f6885",
+      "Id": "bf79b3325a644b439ba8321cce96c509"
+    },
+    {
+      "Start": "0cee752260d840c0b0983206979985d7",
+      "End": "e3524629fcae4db5bd01969e3e804551",
+      "Id": "64d1846ecb6d4a44857785c55cb0ffb3"
+    },
+    {
+      "Start": "ebc2e95ea3c14dfba5e2df9617cf335f",
+      "End": "7a8c8d88d95744b7b2ab47975f0dc15a",
+      "Id": "dc3341db195746c58fdaca9c62f0adb8"
+    },
+    {
+      "Start": "c5c596e5b92740768b6ff329f3270721",
+      "End": "a24dc7e858854685980577eec1836af7",
+      "Id": "4914da552554463abbe1e56ca044e720"
+    },
+    {
+      "Start": "c5c596e5b92740768b6ff329f3270721",
+      "End": "83549b2dabaf42aba84642393eb235c6",
+      "Id": "5005a65b69284eab8042fd2541780f1e"
+    },
+    {
+      "Start": "c5c596e5b92740768b6ff329f3270721",
+      "End": "44561805423d40269a258bf14220b0ce",
+      "Id": "78c14f2e295b4644974542c2595daa6a"
+    },
+    {
+      "Start": "c5c596e5b92740768b6ff329f3270721",
+      "End": "8dcfa527d81143ddba3cfbf378dd355b",
+      "Id": "c1845938b055434192c0da6cffcda148"
+    },
+    {
+      "Start": "4740c53eecb440a39b5ecd578881b947",
+      "End": "0861f78c66af444585681abf074b1b5a",
+      "Id": "cdb04b19afa443e38b001887d9a4c9be"
+    }
+  ],
+  "Dependencies": [
+    "a446efa3-02b0-4c15-a07a-2c445a039422"
+  ],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 35329.56663369028,
+      "EyeY": 2647.060661237148,
+      "EyeZ": -2182.500737698284,
+      "LookX": 409.87672568471788,
+      "LookY": -1297.060661237148,
+      "LookZ": -992.499262301716,
+      "UpX": 0.23500140945115625,
+      "UpY": 0.78801075360672268,
+      "UpZ": -0.56904603483034355
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "Convert()",
+        "Id": "328964fdcb0d481e8ceef32260a054d7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 861.30696251483369,
+        "Y": 202.72731482484522
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Element from ID",
+        "Id": "66bf20fc16e841cfb3748c2b024f54db",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 858.91800206904577,
+        "Y": 497.93804885407832
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "MaterialElementId",
+        "Id": "61df7ce714f545a5b09176136b138c39",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 651.51222054331629,
+        "Y": 473.13093949669309
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "cbab9786402843d5bf761a70e0af9eb5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -39.342012551019138,
+        "Y": 253.1561491200614
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Watch",
+        "Id": "0f7e06f97417405ba2a54d6ae35cb387",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 503.4602731788741,
+        "Y": 604.7035417636705
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "291239c3604349ecbdeac027f0b2615c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1215.8544346547631,
+        "Y": 216.15484291253057
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "75a68f0d6608492393d460d4def6e50d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1226.9921686889318,
+        "Y": 507.5195279180528
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "1fedb64237014795a95d83b5ab61768d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 629.18907995110453,
+        "Y": 28.577495626211373
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Get Geometry",
+        "Id": "94d58625d2334e508170832033cd26ac",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 280.48007349047691,
+        "Y": 407.92932700861184
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ba8694c07de94ffeba7ccdfdb3e644ca",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -81.448970086154077,
+        "Y": 448.61362160610452
+      }
+    ],
+    "Annotations": [],
+    "X": 180.12061705670959,
+    "Y": -51.983604275056166,
+    "Zoom": 0.8736776244544715
+  }
+}
