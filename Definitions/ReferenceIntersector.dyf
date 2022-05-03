@@ -2,7 +2,7 @@
   "Uuid": "71b93afd-5375-4701-a6ac-e5c94933fa15",
   "IsCustomNode": true,
   "Category": "Antler.Revit.Collect.Query",
-  "Description": "Finds Elements in 3D by input Points. By default the function searches for elements under the points.",
+  "Description": "Finds Elements in 3D by input Points and direction. By default the function searches for elements below the points. You must also supply a 3D View and minimum one category to search for. Works similar to RayBounce.",
   "Name": "ReferenceIntersector",
   "ElementResolver": {
     "ResolutionMap": {
