@@ -1,0 +1,158 @@
+{
+  "Uuid": "d7ccc446-8cd4-4ba4-ad7b-2d9d8a2417df",
+  "IsCustomNode": true,
+  "Category": "antler",
+  "Description": "",
+  "Name": "WIPCurrentWorkspace",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "\"\"\"\r\nDYNAMOAPI: GET CURRENT WORKSPACE NAME\r\n\"\"\"\r\n__author__ = 'John Pierson - sixtysecondrevit@gmail.com'\r\n__twitter__ = '@60secondrevit'\r\n__github__ = '@sixtysecondrevit'\r\n__version__ = '1.0.0'\r\n\"\"\"\r\nUsing reflection we are able to obtain the current Dynamo instance from the Revit instance.\r\n\"\"\"\r\n# we need to import the common language runtime to be able to interact with Dynamo & Revit\r\n\r\n# Importing Reference Modules\r\n# CLR ( Common Language Runtime Module )\r\nimport clr\r\n# Adding the DynamoRevitDS.dll module to work with the Dynamo API\r\nclr.AddReference('DynamoRevitDS')\r\nimport Dynamo \r\n\r\n# access to the current Dynamo instance and workspace\r\ndynamoRevit = Dynamo.Applications.DynamoRevit()\r\ncurrentWorkspace = dynamoRevit.RevitDynamoModel.CurrentWorkspace\r\n\r\n# Access current version of dynamo\r\nversion=dynamoRevit.RevitDynamoModel.Version\r\n\r\n# checks version of dynamo and adjusts output according to version\r\nif version.StartsWith(\"1.\"):\r\n\t\r\n\t# Gets file name which includes full path\r\n\tfilename=currentWorkspace.FileName\r\n\t\r\n\t# Splits out file path to just file name\r\n\tOUT=filename.Split(\"\\\\\")[-1].Replace(\".dyn\",\"\")\r\n\r\nelif version.StartsWith(\"2.\"):\r\n\t#OUT = ([a for a in dynamoRevit.RevitDynamoModel.Workspaces])#.Name\\)\r\n\t#OUT = currentWorkspace.FileName\r\n\tOUT = dir(dynamoRevit)\r\nelse:\r\n\tOUT=\"Not supported\"",
+      "VariableInputPorts": true,
+      "Id": "5a24701b383a45bcae0449eb3dfbaad8",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "64254d77b601494c91b32d87a81e3214",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "",
+      "Id": "ea2d4d53911f4272b61b1ca7c06791a1",
+      "Inputs": [
+        {
+          "Id": "349ceafde77b4cf9aede031953c59fec",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "eb546f642a6f4bfc8ff18424170d0ba2",
+      "Inputs": [
+        {
+          "Id": "54fe75ed4abf44afa89b929ece8ede43",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "4989ce44a3684a35a2d41146323a0400",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "64254d77b601494c91b32d87a81e3214",
+      "End": "54fe75ed4abf44afa89b929ece8ede43",
+      "Id": "87f65f3207bb4a41b317806157b261fe"
+    },
+    {
+      "Start": "64254d77b601494c91b32d87a81e3214",
+      "End": "349ceafde77b4cf9aede031953c59fec",
+      "Id": "e181d62c7aa04ad79edf9fd7f15112d8"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "5a24701b383a45bcae0449eb3dfbaad8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 293.26859319927394,
+        "Y": 254.65052964220888
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "ea2d4d53911f4272b61b1ca7c06791a1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 577.26817683994307,
+        "Y": 348.52500220829018
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "eb546f642a6f4bfc8ff18424170d0ba2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 532.214287834699,
+        "Y": 160.48987877769795
+      }
+    ],
+    "Annotations": [],
+    "X": -274.92149394395187,
+    "Y": -83.963913233522646,
+    "Zoom": 1.178285865594787
+  }
+}

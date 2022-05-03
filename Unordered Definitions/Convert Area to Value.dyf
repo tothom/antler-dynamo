@@ -1,0 +1,44 @@
+<Workspace Version="0.7.3.3034" X="-134.608860067171" Y="-59.3695932681234" zoom="0.808219866393029" Description="" Category="Units.Area.Create" Name="Convert Area to Value" ID="00b4670a-ce4a-48fa-ae1a-619b4d7a2d51">
+  <Elements>
+    <DSIronPythonNode.PythonNode type="DSIronPythonNode.PythonNode" guid="349fddf1-2a27-4490-9e24-ccc11439c806" nickname="Python Script" x="525.166520685846" y="295.463614199508" isVisible="true" isUpstreamVisible="true" lacing="Disabled" inputcount="1">
+      <Script>import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+#The inputs to this node will be stored as a list in the IN variable.
+inStr = IN[0]
+
+newStr = []
+
+def trimString(s):
+	return float(s[:-2])
+
+"""
+for i in inStr:
+	newStr.append(trimString(i))
+"""
+
+newStr = trimString(inStr)
+
+"""
+for i in range(0,len(inStr)):
+#	i = i.replace(' ', '')[:-2].upper()
+	newStr.append(inStr[i][:-2])
+"""
+#Assign your output to the OUT variable
+OUT = newStr</Script>
+    </DSIronPythonNode.PythonNode>
+    <Dynamo.Nodes.DSFunction type="Dynamo.Nodes.DSFunction" guid="7492c29a-0a38-4e44-ac64-c3c07991b99e" nickname="String.FromObject" x="307.001698318628" y="292.376399297536" isVisible="true" isUpstreamVisible="true" lacing="Shortest" assembly="DSCoreNodes.dll" function="DSCore.String.FromObject@var" />
+    <Dynamo.Nodes.Symbol type="Dynamo.Nodes.Symbol" guid="37e2d7ec-db83-4ee5-a593-cdf22026a9b9" nickname="Input" x="150.858481920156" y="297.001446612076" isVisible="true" isUpstreamVisible="true" lacing="Disabled">
+      <Symbol value="" />
+    </Dynamo.Nodes.Symbol>
+    <Dynamo.Nodes.Output type="Dynamo.Nodes.Output" guid="77a5e030-4716-4c54-ae4a-aa9188b20c71" nickname="Output" x="722.852986297477" y="292.555893469247" isVisible="true" isUpstreamVisible="true" lacing="Disabled">
+      <Symbol value="" />
+    </Dynamo.Nodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Models.ConnectorModel start="349fddf1-2a27-4490-9e24-ccc11439c806" start_index="0" end="77a5e030-4716-4c54-ae4a-aa9188b20c71" end_index="0" portType="0" />
+    <Dynamo.Models.ConnectorModel start="7492c29a-0a38-4e44-ac64-c3c07991b99e" start_index="0" end="349fddf1-2a27-4490-9e24-ccc11439c806" end_index="0" portType="0" />
+    <Dynamo.Models.ConnectorModel start="37e2d7ec-db83-4ee5-a593-cdf22026a9b9" start_index="0" end="7492c29a-0a38-4e44-ac64-c3c07991b99e" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+</Workspace>
