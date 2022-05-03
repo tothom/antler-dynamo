@@ -2,7 +2,7 @@
   "Uuid": "74ebf29a-1d81-4c7d-a346-719acdd14cf7",
   "IsCustomNode": true,
   "Category": "Antler.Revit.Elements.Element.Query",
-  "Description": "Extracts surfaces from input element with a parallel list of materials.",
+  "Description": "Extracts surfaces from input element with a parallel list of materials for each surface.",
   "Name": "ExtractElementSurfacesWithMaterials",
   "ElementResolver": {
     "ResolutionMap": {

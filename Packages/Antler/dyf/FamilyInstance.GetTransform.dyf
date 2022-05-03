@@ -1,7 +1,7 @@
 {
   "Uuid": "ea71f01a-596f-497c-ba2f-53c91c412100",
   "IsCustomNode": true,
-  "Category": "Antler.Revit.FamilyInstance.Query",
+  "Category": "Antler.Revit.Elements.FamilyInstance.Query",
   "Description": "Gets Transform of FamilyInstance as a Coordinate System.",
   "Name": "GetTransform",
   "ElementResolver": {

@@ -2,8 +2,8 @@
   "Uuid": "901bc856-bea7-4423-a2dd-6ed67cf6208a",
   "IsCustomNode": true,
   "Category": "Antler.Geometry.Surfaces.Surface.Actions",
-  "Description": "Gets intersection of multiple coplanar surfaces.",
-  "Name": "Intersection",
+  "Description": "Gets intersection of multiple coplanar surfaces. If surfaces intersect the node will cut away the intersecting part from one of the surfaces.",
+  "Name": "Planar Surface Union",
   "ElementResolver": {
     "ResolutionMap": {
       "List": {
@@ -210,7 +210,7 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
       "NodeType": "OutputNode",
       "ElementResolver": null,
-      "Symbol": "intersection",
+      "Symbol": "union",
       "Id": "7d35a2683caa43078d44ec0411306df9",
       "Inputs": [
         {
@@ -264,15 +264,15 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 3560.6425953899011,
-      "EyeY": 3646.463053948065,
-      "EyeZ": -2657.9377205340988,
-      "LookX": -2770.6425953899011,
-      "LookY": -2726.463053948065,
-      "LookZ": 2657.9377205340988,
-      "UpX": -0.28196400500066954,
-      "UpY": 0.92050485345244759,
-      "UpZ": 0.27049420447485234
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
     },
     "NodeViews": [
       {
@@ -327,8 +327,8 @@
       }
     ],
     "Annotations": [],
-    "X": 387.23009021596818,
-    "Y": 308.76657205707539,
-    "Zoom": 0.82269535937499993
+    "X": -1087.7126103524415,
+    "Y": 159.83591835839536,
+    "Zoom": 0.910063803931439
   }
 }

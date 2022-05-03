@@ -1,11 +1,32 @@
 {
-  "Uuid": "8652476b-ba64-41b8-af35-f3b9f4a7ce28",
+  "Uuid": "3278047b-a8c5-4b07-84cf-86d659b2b420",
   "IsCustomNode": true,
-  "Category": "Antler.Revit.Collect.Query",
-  "Description": "Collects room at point. Phase is a required parameter to only collect one room. ",
-  "Name": "RoomAtPoint",
+  "Category": "Antler.Utilities",
+  "Description": "Finds subfolders in input folder with given name. Node will search recursively and return all folders with given name.",
+  "Name": "FindSubfoldersByName",
   "ElementResolver": {
-    "ResolutionMap": {}
+    "ResolutionMap": {
+      "CoordinateSystem": {
+        "Key": "Autodesk.DesignScript.Geometry.CoordinateSystem",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Plane": {
+        "Key": "Autodesk.DesignScript.Geometry.Plane",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
   },
   "Inputs": [],
   "Outputs": [],
@@ -13,12 +34,12 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variables.\r\n\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\ndef room_phase_filter(phase):\r\n    phase_id = phase.Id\r\n\r\n    provider = DB.ParameterValueProvider(\r\n        DB.ElementId(DB.BuiltInParameter.ROOM_PHASE_ID))\r\n    rule = DB.FilterElementIdRule(provider, DB.FilterNumericEquals(), phase_id)\r\n    parameter_filter = DB.ElementParameterFilter(rule)\r\n\r\n    return parameter_filter\r\n\r\ndef collect_room_at_pt(pt, phase_filter):\r\n    collector = DB.FilteredElementCollector(doc)\r\n    collector.OfCategory(DB.BuiltInCategory.OST_Rooms)\r\n    # collector = room_collector(phase)\r\n\r\n    bbox_pt_filter = DB.BoundingBoxContainsPointFilter(pt)\r\n\r\n    collector.WherePasses(bbox_pt_filter)\r\n\r\n    if collector.GetElementCount() > 0:\r\n\r\n        collector.WherePasses(phase_filter)\r\n\r\n        for room in collector.ToElements():\r\n            if room.IsPointInRoom(pt):\r\n                return room\r\n\r\nif isinstance(IN[0], list):\r\n    pts = [pt.ToXyz() for pt in IN[0]]\r\nelse:\r\n    pts = [IN[0].ToXyz()]\r\n\r\nphase = UnwrapElement(IN[1])\r\n\r\n\r\nphase_filter = room_phase_filter(phase)\r\n\r\nrooms = [collect_room_at_pt(pt, phase_filter) for pt in pts]\r\n\r\nOUT = rooms\r\n",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\n#import sys\r\nimport os\r\n#import clr\r\n\r\npaths = IN[0]\r\nsubfolder = IN[1]\r\n\r\n\r\n\r\ndef find_subfolder(path, subfolder):\r\n\tfor root, dirs, files in os.walk(path):\r\n\t\tif subfolder in dirs:\r\n\t\t\tyield os.path.join(root, subfolder)\r\n\r\n\r\nfound_paths = []\r\n\r\n\r\nif isinstance(paths, (list, tuple)):\r\n\t[found_paths.extend(find_subfolder(path, subfolder)) for path in paths]\r\nelse:\r\n\tfound_paths.append(find_subfolder(paths, subfolder))\r\n\r\n\r\n\r\n\r\nOUT = found_paths",
       "VariableInputPorts": true,
-      "Id": "5f3dda4a1aee4b2a895e8f845a854389",
+      "Id": "da8cb3846d1c4c728fb1a903011df13a",
       "Inputs": [
         {
-          "Id": "7e50e49e560449ea90fb47eaf7208cb7",
+          "Id": "d9c9ffa7ab944dd3a4dc0c9511b4e304",
           "Name": "IN[0]",
           "Description": "Input #0",
           "UsingDefaultValue": false,
@@ -27,7 +48,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "1d33c9cd5f764ae5aaab31a58ebc9b2f",
+          "Id": "b028cad9920d448a927261192d9b0655",
           "Name": "IN[1]",
           "Description": "Input #1",
           "UsingDefaultValue": false,
@@ -38,7 +59,7 @@
       ],
       "Outputs": [
         {
-          "Id": "85958a9279a44156857c787e04ea460e",
+          "Id": "a0c3f66a1984453b8db2aa8890613726",
           "Name": "OUT",
           "Description": "Result of the python script",
           "UsingDefaultValue": false,
@@ -54,17 +75,17 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
       "NodeType": "InputNode",
       "Parameter": {
-        "Name": "pt",
+        "Name": "folder",
         "TypeName": "var",
         "TypeRank": -1,
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "7a7429ec5db741af8a214d6cbb3ddf8c",
+      "Id": "e667d1c0f45b44aaa1d3ee4b5aea59cd",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "ec49adcdf55f4b09b0251b5a26d838b0",
+          "Id": "caf0840af8c44f59840ead88378bbcb9",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -80,17 +101,17 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
       "NodeType": "InputNode",
       "Parameter": {
-        "Name": "phase",
+        "Name": "subfolder_name",
         "TypeName": "var",
         "TypeRank": -1,
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "d441c81fabe54a2a972a8f7c9a313704",
+      "Id": "8855fc0157494c8582bd8faa55a22b6e",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "a3d270541da74f75bc27972a7b3621db",
+          "Id": "c19efdb5401d4076b7ea825b8c4d5e63",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -106,11 +127,11 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
       "NodeType": "OutputNode",
       "ElementResolver": null,
-      "Symbol": "room",
-      "Id": "447a7ac4a844429098500cd6cc649236",
+      "Symbol": "folders",
+      "Id": "70a45a6433dc49b0b7053bc20e21dcb2",
       "Inputs": [
         {
-          "Id": "10f420f06978417c8163ddbfdfc91a87",
+          "Id": "9a85bf6c5bbd48318cbb714156ea4f6a",
           "Name": "",
           "Description": "",
           "UsingDefaultValue": false,
@@ -126,19 +147,19 @@
   ],
   "Connectors": [
     {
-      "Start": "85958a9279a44156857c787e04ea460e",
-      "End": "10f420f06978417c8163ddbfdfc91a87",
-      "Id": "ad77bfb6afda4aadb9a4731f67fd128b"
+      "Start": "a0c3f66a1984453b8db2aa8890613726",
+      "End": "9a85bf6c5bbd48318cbb714156ea4f6a",
+      "Id": "1d8e345b9dbd41e6b2f9dd19110ed5cf"
     },
     {
-      "Start": "ec49adcdf55f4b09b0251b5a26d838b0",
-      "End": "7e50e49e560449ea90fb47eaf7208cb7",
-      "Id": "c7620b316aac47aabc5104c86f2f8fcc"
+      "Start": "caf0840af8c44f59840ead88378bbcb9",
+      "End": "d9c9ffa7ab944dd3a4dc0c9511b4e304",
+      "Id": "a1d60f40b59f4bf683082cd1f0559068"
     },
     {
-      "Start": "a3d270541da74f75bc27972a7b3621db",
-      "End": "1d33c9cd5f764ae5aaab31a58ebc9b2f",
-      "Id": "2a8a6662c2e0400fa82d0928526f8cf5"
+      "Start": "c19efdb5401d4076b7ea825b8c4d5e63",
+      "End": "b028cad9920d448a927261192d9b0655",
+      "Id": "1782e4d5261744e2bd2ff765dc7d920b"
     }
   ],
   "Dependencies": [],
@@ -155,12 +176,12 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -31.587077886992923,
-      "EyeY": 39.80266771090902,
-      "EyeZ": 120.5042097871326,
-      "LookX": 26.587077886992923,
-      "LookY": -28.80266771090902,
-      "LookZ": -128.5042097871326,
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
       "UpX": 0.0,
       "UpY": 1.0,
       "UpZ": 0.0
@@ -169,7 +190,7 @@
       {
         "ShowGeometry": true,
         "Name": "Python Script",
-        "Id": "5f3dda4a1aee4b2a895e8f845a854389",
+        "Id": "da8cb3846d1c4c728fb1a903011df13a",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
@@ -179,7 +200,7 @@
       {
         "ShowGeometry": true,
         "Name": "Input",
-        "Id": "7a7429ec5db741af8a214d6cbb3ddf8c",
+        "Id": "e667d1c0f45b44aaa1d3ee4b5aea59cd",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
@@ -189,7 +210,7 @@
       {
         "ShowGeometry": true,
         "Name": "Input",
-        "Id": "d441c81fabe54a2a972a8f7c9a313704",
+        "Id": "8855fc0157494c8582bd8faa55a22b6e",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
@@ -199,7 +220,7 @@
       {
         "ShowGeometry": true,
         "Name": "Output",
-        "Id": "447a7ac4a844429098500cd6cc649236",
+        "Id": "70a45a6433dc49b0b7053bc20e21dcb2",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
