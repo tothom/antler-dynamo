@@ -1,0 +1,390 @@
+{
+  "Uuid": "5942f2e6-bb1d-4733-8146-1678daa81eb8",
+  "IsCustomNode": true,
+  "Category": "Antler.Revit.Elements",
+  "Description": "Returns Element, Point, Geometry from input Reference.",
+  "Name": "QueryReference",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Revit.Elements.Views.View": {
+        "Key": "Revit.Elements.Views.View",
+        "Value": "RevitNodes.dll"
+      },
+      "Revit.Elements.Category": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "Autodesk.DesignScript.Geometry.Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nreferences = IN[0]\r\n\r\n\r\n# Place your code below this line\r\ndef query(reference):\r\n\telement = doc.GetElement(reference.ElementId)\r\n\tpt = reference.GlobalPoint.ToPoint()\r\n\tgeometry = element.GetGeometryObjectFromReference(reference)\r\n\t\r\n\treturn element\r\n\t\r\n\r\nif not references:\r\n\tresult = None\r\n\r\nelif isinstance(references, (list, tuple)):\r\n\tresult = [query(ref) for ref in references]\r\nelse:\r\n\tresult = query(references)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
+      "VariableInputPorts": true,
+      "Id": "7c5329f517154043903418982364d753",
+      "Inputs": [
+        {
+          "Id": "ade4a19f1d714b08b1c51db468ed9309",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "51b4e209b57c4f6b9f08cf3966d6af26",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "reference",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "301ff578128f4f6e8efb663894bc452b",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "e07deb50838d4c01bc49528178997103",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "element",
+      "Id": "aef24db1217b4f3db907af66286672a1",
+      "Inputs": [
+        {
+          "Id": "c5ea0bd17bf743fb98aa9c8453c0e27e",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "point",
+      "Id": "04d77af110b24c9c9a494789c3049b1f",
+      "Inputs": [
+        {
+          "Id": "dfabc13226694f18934ad0552c72878e",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "geometry",
+      "Id": "853f7a3574d1458ea5fd0ffb052565b1",
+      "Inputs": [
+        {
+          "Id": "08c495e4b0ef4c9985b5a0790aef764b",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "7ab19ae9-5c38-43f0-81de-10fd276e748c",
+      "FunctionType": "Graph",
+      "NodeType": "FunctionNode",
+      "Id": "cc9b55628aa7406aa54a0d942fd873bd",
+      "Inputs": [
+        {
+          "Id": "4492a1a7026f45b3ac462a38efa00d3d",
+          "Name": "revit_geometry",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "846ba8ce3b274a4dbae59bfae588dfea",
+          "Name": "geometry",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Converts Revit geometry to Dynamo geometry."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nreferences = IN[0]\r\n\r\n\r\n# Place your code below this line\r\ndef query(reference):\r\n\telement = doc.GetElement(reference.ElementId)\r\n\tpt = reference.GlobalPoint.ToPoint()\r\n\tgeometry = element.GetGeometryObjectFromReference(reference)\r\n\t\r\n\treturn pt\r\n\t\r\n\r\nif not references:\r\n\tresult = None\r\n\r\nelif isinstance(references, (list, tuple)):\r\n\tresult = [query(ref) for ref in references]\r\nelse:\r\n\tresult = query(references)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
+      "VariableInputPorts": true,
+      "Id": "096cfd85e827433baa0d8a402da9458a",
+      "Inputs": [
+        {
+          "Id": "9bbb1cb6b490475594127ae0da97e40d",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "eb317d7b6823490faf876689618da7d6",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nreferences = IN[0]\r\n\r\n\r\n# Place your code below this line\r\ndef query(reference):\r\n\telement = doc.GetElement(reference.ElementId)\r\n\tpt = reference.GlobalPoint.ToPoint()\r\n\tgeometry = element.GetGeometryObjectFromReference(reference)\r\n\t\r\n\treturn geometry\r\n\t\r\n\r\nif not references:\r\n\tresult = None\r\n\r\nelif isinstance(references, (list, tuple)):\r\n\tresult = [query(ref) for ref in references]\r\nelse:\r\n\tresult = query(references)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
+      "VariableInputPorts": true,
+      "Id": "d9b925d30d1047b795f06f591af13a8b",
+      "Inputs": [
+        {
+          "Id": "a3fe20c3f7c14c969f1de6949a89c4dd",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b5c57d68b9a24e06b65f9458d4dab908",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "51b4e209b57c4f6b9f08cf3966d6af26",
+      "End": "c5ea0bd17bf743fb98aa9c8453c0e27e",
+      "Id": "27d86be9a1d24990915a7b6c93b4128a"
+    },
+    {
+      "Start": "e07deb50838d4c01bc49528178997103",
+      "End": "ade4a19f1d714b08b1c51db468ed9309",
+      "Id": "30c5fa48b1a241aa8de5b7ae63de3d47"
+    },
+    {
+      "Start": "e07deb50838d4c01bc49528178997103",
+      "End": "9bbb1cb6b490475594127ae0da97e40d",
+      "Id": "124e0de94c4a49cfababc0d98a116128"
+    },
+    {
+      "Start": "e07deb50838d4c01bc49528178997103",
+      "End": "a3fe20c3f7c14c969f1de6949a89c4dd",
+      "Id": "283766d048c04545978b0fbde0b1ec4a"
+    },
+    {
+      "Start": "846ba8ce3b274a4dbae59bfae588dfea",
+      "End": "08c495e4b0ef4c9985b5a0790aef764b",
+      "Id": "4075c6c4dfb6483dac2df9ae099819d3"
+    },
+    {
+      "Start": "eb317d7b6823490faf876689618da7d6",
+      "End": "dfabc13226694f18934ad0552c72878e",
+      "Id": "b583b3b4eca94329b2db18630e8e79c5"
+    },
+    {
+      "Start": "b5c57d68b9a24e06b65f9458d4dab908",
+      "End": "4492a1a7026f45b3ac462a38efa00d3d",
+      "Id": "097c503044004b638893b9c9c86eac8c"
+    }
+  ],
+  "Dependencies": [
+    "7ab19ae9-5c38-43f0-81de-10fd276e748c"
+  ],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 19816.781372660218,
+      "EyeY": 26633.973312278569,
+      "EyeZ": -7916.74070152159,
+      "LookX": -20816.781372660218,
+      "LookY": -20633.973312278569,
+      "LookZ": -31083.25929847841,
+      "UpX": -0.15804027868565987,
+      "UpY": 0.9588197348682006,
+      "UpZ": -0.23598302129655072
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "Reference.Element",
+        "Id": "7c5329f517154043903418982364d753",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 160.58123504795162,
+        "Y": -76.3561977299504
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "301ff578128f4f6e8efb663894bc452b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -200.78250596204214,
+        "Y": 4.3765085640185362
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "aef24db1217b4f3db907af66286672a1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 555.77730319197531,
+        "Y": -58.982097897544179
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "04d77af110b24c9c9a494789c3049b1f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 569.96242095430762,
+        "Y": 62.02590483597163
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "853f7a3574d1458ea5fd0ffb052565b1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 850.42837206408626,
+        "Y": 186.74261159151638
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "RevitGeometryToDSGeometry",
+        "Id": "cc9b55628aa7406aa54a0d942fd873bd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 473.90085183637007,
+        "Y": 165.22593987731051
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Reference.Point",
+        "Id": "096cfd85e827433baa0d8a402da9458a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 164.56540600672383,
+        "Y": 25.376749093007959
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Reference.Geometry",
+        "Id": "d9b925d30d1047b795f06f591af13a8b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 147.49106405519228,
+        "Y": 115.89902603489281
+      }
+    ],
+    "Annotations": [],
+    "X": 416.90158447348313,
+    "Y": 392.43570442488272,
+    "Zoom": 0.68808308735931767
+  }
+}

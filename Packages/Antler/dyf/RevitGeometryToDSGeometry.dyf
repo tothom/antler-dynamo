@@ -1,0 +1,178 @@
+{
+  "Uuid": "7ab19ae9-5c38-43f0-81de-10fd276e748c",
+  "IsCustomNode": true,
+  "Category": "Antler.Geometry",
+  "Description": "Converts Revit geometry to Dynamo geometry.",
+  "Name": "RevitGeometryToDSGeometry",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "Revit.Elements.Views.View": {
+        "Key": "Revit.Elements.Views.View",
+        "Value": "RevitNodes.dll"
+      },
+      "Revit.Elements.Category": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "Autodesk.DesignScript.Geometry.Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nrevit_geometry = IN[0]\r\n\r\nGEOMETRY_CONVERSION_DICT = {\r\n\tDB.Face: lambda x:x.Convert(),\r\n\tDB.ConicalFace: lambda x:x.Convert(),\r\n\tDB.CylindricalFace: lambda x:x.Convert(),\r\n\tDB.HermiteFace: lambda x:x.Convert(),\r\n\tDB.PlanarFace: lambda x:x.Convert(),\r\n\tDB.RevolvedFace: lambda x:x.Convert(),\r\n\tDB.RuledFace: lambda x:x.Convert(),\r\n\t\r\n\tDB.Solid: lambda x:x.Convert(),\r\n\t\r\n\tDB.XYZ: lambda x:x.ToPoint(),\r\n\t\r\n\tDB.UV: lambda x:x.ToProtoType(),\r\n\t\r\n}\r\n\r\n# Place your code below this line\r\ndef convert_to_ds_geometry(revit_geometry):\r\n\t#try:\r\n\tds_geometry = GEOMETRY_CONVERSION_DICT.get(type(revit_geometry), lambda x:None)(revit_geometry)\r\n\t#except:\r\n\t#\tpass\r\n\t\r\n\treturn ds_geometry\r\n\t\r\ndef walk(arg, function):\r\n\tif isinstance(arg, (list, tuple)):\r\n\t\treturn [walk(e, function) for e in arg]\r\n\telse:\r\n\t\treturn function(arg)\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = walk(revit_geometry, convert_to_ds_geometry)",
+      "VariableInputPorts": true,
+      "Id": "cd6d55352a0540df8eae092558e55c26",
+      "Inputs": [
+        {
+          "Id": "3327e9083f434a6b84e5d1d3cf8ceb6e",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "210a8f660efe4da89a44963fe98c38c0",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "revit_geometry",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "ba2f24e6aff245a69a9e2e346e842717",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "44c4145dbead44a8aa40adbee340bc9c",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "geometry",
+      "Id": "fd119408fecf4e89aeb553c970abfaef",
+      "Inputs": [
+        {
+          "Id": "8c54110326b74b3f842aabcbc478c2e4",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "210a8f660efe4da89a44963fe98c38c0",
+      "End": "8c54110326b74b3f842aabcbc478c2e4",
+      "Id": "fde31f3e574b4fb0bb5768d4f747424c"
+    },
+    {
+      "Start": "44c4145dbead44a8aa40adbee340bc9c",
+      "End": "3327e9083f434a6b84e5d1d3cf8ceb6e",
+      "Id": "4de0b671789e49809728368575ad57d7"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 25935.7341913982,
+      "EyeY": 30124.567291343174,
+      "EyeZ": -16246.105244130151,
+      "LookX": -26935.7341913982,
+      "LookY": -24124.567291343174,
+      "LookZ": -22753.894755869849,
+      "UpX": -0.28616788634367923,
+      "UpY": 0.92718385456679342,
+      "UpZ": -0.24173961333688693
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "ConvertRevitGeometry",
+        "Id": "cd6d55352a0540df8eae092558e55c26",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "ba2f24e6aff245a69a9e2e346e842717",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -130.76962595216634,
+        "Y": -8.2198050598504722
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "fd119408fecf4e89aeb553c970abfaef",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 526.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": -34.420901808855319,
+    "Y": 257.95386167656591,
+    "Zoom": 1.33823125
+  }
+}
