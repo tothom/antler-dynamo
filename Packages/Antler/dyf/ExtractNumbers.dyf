@@ -1,0 +1,182 @@
+{
+  "Uuid": "c2fa298d-1d7a-4a23-bcde-cc4a97d8139e",
+  "IsCustomNode": true,
+  "Category": "Antler.Strings",
+  "Description": "Extracts numbers from string.",
+  "Name": "ExtractNumbers",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "String": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "String.number": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      },
+      "String.ToNumber": {
+        "Key": "DSCore.String",
+        "Value": "DSCoreNodes.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import re\r\n\r\nstring = IN[0]\r\n\r\nnumber_pattern = \"\\d+\\.*\\d*\"\r\n\r\nmatches = re.findall(number_pattern, string)\r\n\r\nnumbers = []\r\n\r\nfor match in matches:\r\n\ttry:\r\n\t\tnumber = int(match)\r\n\texcept:\r\n\t\tnumber = float(match)\r\n\t\r\n\tnumbers.append(number)\r\n\r\nOUT = numbers",
+      "VariableInputPorts": true,
+      "Id": "e4d2de39a8c5499dab69b9875257c1c8",
+      "Inputs": [
+        {
+          "Id": "11cd1af735f34f4b8b0b028e4e3c385e",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "80ff23ccc2924b518bd32375a0f0c752",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "string_",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "0536decae7094c0fbafd123a1e4de559",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3da912c3bdeb45cd8ed1d0af5a13405d",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "numbers",
+      "Id": "74a8826a857c45299bd458d1357108f9",
+      "Inputs": [
+        {
+          "Id": "230dade44b6342bba3ad74b6750b2532",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "80ff23ccc2924b518bd32375a0f0c752",
+      "End": "230dade44b6342bba3ad74b6750b2532",
+      "Id": "583dd9061304451f85adb83c6b7bf533"
+    },
+    {
+      "Start": "3da912c3bdeb45cd8ed1d0af5a13405d",
+      "End": "11cd1af735f34f4b8b0b028e4e3c385e",
+      "Id": "a1ad31e2cb6c4972901cfcf71db5fee1"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": 236802.99834373195,
+      "EyeY": 140474.50670637068,
+      "EyeZ": -196392.2250080909,
+      "LookX": -5335.349906231957,
+      "LookY": -137474.50670637068,
+      "LookZ": 53553.853914340885,
+      "UpX": 0.097914604684282147,
+      "UpY": -0.15643446504023087,
+      "UpZ": -0.98282296897106636
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "e4d2de39a8c5499dab69b9875257c1c8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "0536decae7094c0fbafd123a1e4de559",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "74a8826a857c45299bd458d1357108f9",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": 0.0,
+    "Y": 0.0,
+    "Zoom": 1.0
+  }
+}
