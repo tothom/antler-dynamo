@@ -1,28 +1,11 @@
 {
-  "Uuid": "c2fa298d-1d7a-4a23-bcde-cc4a97d8139e",
+  "Uuid": "3d698699-1989-4413-9e32-4b5a603dc5a6",
   "IsCustomNode": true,
-  "Category": "Antler.Strings.Query",
-  "Description": "Extracts numbers from string.",
-  "Name": "ExtractNumbers",
+  "Category": "Antler.Revit.Collect.Query",
+  "Description": "Returns all instances of input filled region type or filled region type name.",
+  "Name": "GetFilledRegions",
   "ElementResolver": {
-    "ResolutionMap": {
-      "List": {
-        "Key": "List",
-        "Value": "BuiltIn.ds"
-      },
-      "String": {
-        "Key": "DSCore.String",
-        "Value": "DSCoreNodes.dll"
-      },
-      "String.number": {
-        "Key": "DSCore.String",
-        "Value": "DSCoreNodes.dll"
-      },
-      "String.ToNumber": {
-        "Key": "DSCore.String",
-        "Value": "DSCoreNodes.dll"
-      }
-    }
+    "ResolutionMap": {}
   },
   "Inputs": [],
   "Outputs": [],
@@ -30,12 +13,12 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import re\r\n\r\nstring = IN[0]\r\n\r\ndef extract_numbers(string):\r\n\tnumber_pattern = \"\\d+\\.*\\d*\"\r\n\t\r\n\tmatches = re.findall(number_pattern, string)\r\n\t\r\n\tnumbers = []\r\n\t\r\n\tfor match in matches:\r\n\t\ttry:\r\n\t\t\tnumber = int(match)\r\n\t\texcept ValueError:\r\n\t\t\tnumber = float(match)\r\n\t\t\r\n\t\tnumbers.append(number)\r\n\t\r\n\treturn numbers\r\n\r\nif isinstance(string, basestring):\r\n\tnumbers = extract_numbers(string)\r\nelif isinstance(string, list):\r\n\tnumbers = [extract_numbers(a) for a in string]\r\nelse:\r\n\tnumbers = []\r\n\r\nOUT = numbers",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\n#The inputs to this node will be stored as a list in the IN variables.\r\nnames = IN[0]\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\ndef filled_regions_by_name_collector(name, doc=doc):\r\n    provider = DB.ParameterValueProvider(\r\n        DB.ElementId(DB.BuiltInParameter.ALL_MODEL_TYPE_NAME))\r\n        \r\n    rule = DB.FilterStringRule(\r\n        provider, DB.FilterStringEquals(), name, False)\r\n        \r\n    parameter_filter = DB.ElementParameterFilter(rule)\r\n    \r\n    collector = DB.FilteredElementCollector(doc)\r\n    collector.WhereElementIsNotElementType()\r\n    collector.OfClass(clr.GetClrType(DB.FilledRegion))\r\n    \r\n    collector.WherePasses(parameter_filter)\r\n\r\n    return collector\r\n   \r\ndef process(item):\t    \r\n\tif isinstance(item, basestring):\r\n\t\treturn filled_regions_by_name_collector(names).ToElements()\r\n\telif isinstance(UnwrapElement(item), DB.FilledRegionType):\r\n\t\treturn filled_regions_by_name_collector(item.Name).ToElements()\r\n\telif isinstance(item, list):\r\n\t\treturn [process(a) for a in item]\r\n\t\t\r\n\t\t\r\nOUT = process(names)\r\n",
       "VariableInputPorts": true,
-      "Id": "e4d2de39a8c5499dab69b9875257c1c8",
+      "Id": "619ace2f5c9d45d5b7fc151e452b0e70",
       "Inputs": [
         {
-          "Id": "11cd1af735f34f4b8b0b028e4e3c385e",
+          "Id": "00da0c3adff04f41bc26809b92a8fdd3",
           "Name": "IN[0]",
           "Description": "Input #0",
           "UsingDefaultValue": false,
@@ -46,7 +29,7 @@
       ],
       "Outputs": [
         {
-          "Id": "80ff23ccc2924b518bd32375a0f0c752",
+          "Id": "250767256b6d4402876cbae717f12403",
           "Name": "OUT",
           "Description": "Result of the python script",
           "UsingDefaultValue": false,
@@ -62,17 +45,17 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
       "NodeType": "InputNode",
       "Parameter": {
-        "Name": "string_",
+        "Name": "filled_region_type_or_name",
         "TypeName": "var",
         "TypeRank": -1,
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "0536decae7094c0fbafd123a1e4de559",
+      "Id": "2720305e25eb4bfca5f012a100385727",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "3da912c3bdeb45cd8ed1d0af5a13405d",
+          "Id": "9b29023521f0484886b9e13f2a04f844",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -88,11 +71,11 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
       "NodeType": "OutputNode",
       "ElementResolver": null,
-      "Symbol": "numbers",
-      "Id": "74a8826a857c45299bd458d1357108f9",
+      "Symbol": "filled_regions",
+      "Id": "4ba01546a5714d269096fa859e96a88b",
       "Inputs": [
         {
-          "Id": "230dade44b6342bba3ad74b6750b2532",
+          "Id": "5f538055957a4fb2bbfaa0ea92a5f59d",
           "Name": "",
           "Description": "",
           "UsingDefaultValue": false,
@@ -108,14 +91,14 @@
   ],
   "Connectors": [
     {
-      "Start": "80ff23ccc2924b518bd32375a0f0c752",
-      "End": "230dade44b6342bba3ad74b6750b2532",
-      "Id": "583dd9061304451f85adb83c6b7bf533"
+      "Start": "250767256b6d4402876cbae717f12403",
+      "End": "5f538055957a4fb2bbfaa0ea92a5f59d",
+      "Id": "4f639ec778fe4357b45704c9cd4ad759"
     },
     {
-      "Start": "3da912c3bdeb45cd8ed1d0af5a13405d",
-      "End": "11cd1af735f34f4b8b0b028e4e3c385e",
-      "Id": "a1ad31e2cb6c4972901cfcf71db5fee1"
+      "Start": "9b29023521f0484886b9e13f2a04f844",
+      "End": "00da0c3adff04f41bc26809b92a8fdd3",
+      "Id": "fec857ae6517467fb7d4d6eabdfdba7d"
     }
   ],
   "Dependencies": [],
@@ -144,39 +127,39 @@
     },
     "NodeViews": [
       {
-        "Id": "e4d2de39a8c5499dab69b9875257c1c8",
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "619ace2f5c9d45d5b7fc151e452b0e70",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Python Script",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 250.0,
         "Y": 0.0
       },
       {
-        "Id": "0536decae7094c0fbafd123a1e4de559",
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "2720305e25eb4bfca5f012a100385727",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Input",
-        "ShowGeometry": true,
         "Excluded": false,
-        "X": 0.0,
-        "Y": 0.0
+        "X": -107.0,
+        "Y": -4.0
       },
       {
-        "Id": "74a8826a857c45299bd458d1357108f9",
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "4ba01546a5714d269096fa859e96a88b",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
-        "Name": "Output",
-        "ShowGeometry": true,
         "Excluded": false,
         "X": 449.0,
         "Y": 0.0
       }
     ],
     "Annotations": [],
-    "X": -786.45952779360709,
-    "Y": 81.654031859456666,
-    "Zoom": 3.6157212987495506
+    "X": -258.93770700372744,
+    "Y": 23.432338943082939,
+    "Zoom": 2.0566802683342771
   }
 }

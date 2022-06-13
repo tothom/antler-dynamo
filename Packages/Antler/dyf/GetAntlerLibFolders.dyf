@@ -1,7 +1,7 @@
 {
   "Uuid": "f6b9726f-39c0-44f5-90a3-95df5ccdc935",
   "IsCustomNode": true,
-  "Category": "Antler.Utilities",
+  "Category": "Antler.Utilities.Query",
   "Description": "Utility function to return the library folder for the Antler package. This folder contains python libraries necessary to run some its components.",
   "Name": "GetAntlerLibFolders",
   "ElementResolver": {

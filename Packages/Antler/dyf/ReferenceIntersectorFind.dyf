@@ -1,7 +1,7 @@
 {
   "Uuid": "d84cae8d-9c20-4b84-b78f-26c163668e92",
   "IsCustomNode": true,
-  "Category": "Antler.Revit.Collect",
+  "Category": "Antler.Revit.Collect.Query",
   "Description": "Returns elements and corresponding geometry found at intersection of ray from input Point and direction Vector.",
   "Name": "ReferenceIntersectorFind",
   "ElementResolver": {
@@ -114,7 +114,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nintersector = IN[0]\r\norigin_pts = IN[1]\r\ndirection = IN[2]\r\n\r\nif direction:\r\n\tdirection = direction.ToRevitType()\r\n\r\n# Place your code below this line\r\ndef find(\r\n\tintersector, origin_xyz, direction=DB.XYZ(0,0,-1)):\r\n\r\n\treferences_with_context = intersector.Find(origin_xyz, direction)\r\n\t\r\n\treferences = []\r\n\tproximities = []\r\n\r\n\tif references_with_context:\r\n\t\tfor reference_with_context in references_with_context:\r\n\t\t\treference = reference_with_context.GetReference()\r\n\t\t\t\r\n\t\t\treferences.append(reference)\r\n\t\t\r\n\t\t\tproximities.append(reference_with_context.Proximity)\r\n\t\t\t\r\n\t\treturn references, proximities\r\n\telse:\r\n\t\treturn [], []\r\n\r\nresult = []\r\n\r\n\r\nfor origin_pt in origin_pts:\r\n\torigin_xyz = origin_pt.ToRevitType()\r\n\t\r\n\tresult.append(find(\r\n\t\tintersector, \r\n\t\torigin_xyz\r\n\t\t))\r\n\r\n\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nintersector = IN[0]\r\norigin_pts = IN[1]\r\ndirection = IN[2]\r\n\r\nif direction:\r\n\tdirection = direction.ToRevitType()\r\n\r\n# Place your code below this line\r\ndef find(\r\n\tintersector, origin_xyz, direction=DB.XYZ(0,0,-1)):\r\n\r\n\treferences_with_context = intersector.Find(origin_xyz, direction)\r\n\t\r\n\treferences = []\r\n\tproximities = []\r\n\r\n\tif references_with_context:\r\n\t\tfor reference_with_context in references_with_context:\r\n\t\t\treference = reference_with_context.GetReference()\r\n\t\t\t\r\n\t\t\treferences.append(reference)\r\n\t\t\r\n\t\t\tproximities.append(reference_with_context.Proximity)\r\n\t\t\t\r\n\t\treturn references, proximities\r\n\telse:\r\n\t\treturn [], []\r\n\r\nresult = []\r\n\r\n\r\nfor origin_pt in origin_pts:\r\n\torigin_xyz = origin_pt.ToRevitType()\r\n\t\r\n\tresult.append(find(\r\n\t\tintersector, \r\n\t\torigin_xyz,\r\n\t\tdirection=direction\r\n\t\t))\r\n\r\n\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
       "VariableInputPorts": true,
       "Id": "1b2c9ad4f0ab4a6888739bdfec654301",
       "Inputs": [
@@ -699,6 +699,35 @@
       ],
       "Replication": "Disabled",
       "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "314b3631ae494fbd905a8a974c1bebfa",
+      "Inputs": [
+        {
+          "Id": "39eb6e3e96fe4d2e96ddaef593ffb4af",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "cd6db15d9b944343808017a977a0c8cb",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
     }
   ],
   "Connectors": [
@@ -744,8 +773,8 @@
     },
     {
       "Start": "aa459a1538034d5284b096304946ce0d",
-      "End": "79f09ccc1c6b424097e11de02f01eb50",
-      "Id": "7e57346e9ca9440ab9d51fa152081a5f"
+      "End": "39eb6e3e96fe4d2e96ddaef593ffb4af",
+      "Id": "bb48654bbd87495591b02cf9579d884e"
     },
     {
       "Start": "8714f3c3e8044f0283714f1f5e780b05",
@@ -803,6 +832,11 @@
       "Id": "69dafc27ec81426f99150e107ec5f79a"
     },
     {
+      "Start": "7251f0b990ff4ef49a4c95b8878fda4e",
+      "End": "79f09ccc1c6b424097e11de02f01eb50",
+      "Id": "815de71e3a8d43c4b9585d009724f7e4"
+    },
+    {
       "Start": "892b9b7710af4e48806e151b797dcc60",
       "End": "d4b63f780a8f4aeaa3de3925dc82708d",
       "Id": "e759f5ac788c4fb9b95306400c3b1739"
@@ -811,7 +845,16 @@
   "Dependencies": [
     "5942f2e6-bb1d-4733-8146-1678daa81eb8"
   ],
-  "NodeLibraryDependencies": [],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "Antler",
+      "Version": "0.1.4",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "51fa7370e38842498e4f5bb161427b63"
+      ]
+    }
+  ],
   "Bindings": [],
   "View": {
     "Dynamo": {
@@ -912,8 +955,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 943.57007731988381,
-        "Y": 726.16445489984915
+        "X": 989.61126785192039,
+        "Y": 675.51914531460886
       },
       {
         "ShowGeometry": false,
@@ -1042,8 +1085,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 2266.2752359481506,
-        "Y": 311.455030265922
+        "X": 2294.7435021431097,
+        "Y": 332.80622991214136
       },
       {
         "ShowGeometry": true,
@@ -1052,8 +1095,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1847.3665955375902,
-        "Y": 325.58993300626673
+        "X": 1243.7492700307698,
+        "Y": 262.63152939820816
       },
       {
         "ShowGeometry": true,
@@ -1064,11 +1107,21 @@
         "Excluded": false,
         "X": 2234.40938552388,
         "Y": 1077.2673539475293
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "314b3631ae494fbd905a8a974c1bebfa",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1857.8430168782584,
+        "Y": 409.74276230205976
       }
     ],
     "Annotations": [],
-    "X": -418.95429322569623,
-    "Y": -8.6429644500780682,
-    "Zoom": 0.65930349276803124
+    "X": -818.01565244422784,
+    "Y": -161.90447851850922,
+    "Zoom": 0.98355129210355285
   }
 }

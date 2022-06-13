@@ -120,6 +120,35 @@
       ],
       "Replication": "Disabled",
       "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "7fae487e82b94c42ab70f352593c02d2",
+      "Inputs": [
+        {
+          "Id": "aefc8a1a1f5847a0b576c0926f4126c1",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "e38730d21e234939ac99d754dcdb460b",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
     }
   ],
   "Connectors": [
@@ -132,6 +161,11 @@
       "Start": "453272a918804837982b6efd2ea0e4ef",
       "End": "210bcf79190d4120a57064c61c53e59c",
       "Id": "b7fae23b24084e208590a2e248dfb0fc"
+    },
+    {
+      "Start": "453272a918804837982b6efd2ea0e4ef",
+      "End": "aefc8a1a1f5847a0b576c0926f4126c1",
+      "Id": "706b3119d79e43ef915e25af93233a1c"
     }
   ],
   "Dependencies": [],
@@ -148,15 +182,15 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -17.0,
-      "EyeY": 24.0,
-      "EyeZ": 50.0,
-      "LookX": 12.0,
-      "LookY": -13.0,
-      "LookZ": -58.0,
-      "UpX": 0.0,
-      "UpY": 1.0,
-      "UpZ": 0.0
+      "EyeX": 46520.94332243871,
+      "EyeY": 66769.012663610571,
+      "EyeZ": 53196.082837545968,
+      "LookX": -33860.93160368871,
+      "LookY": -61194.012663610571,
+      "LookZ": -84612.834790670968,
+      "UpX": -0.13616990356388323,
+      "UpY": 0.93041756798205288,
+      "UpZ": -0.34026593504760777
     },
     "NodeViews": [
       {
@@ -166,8 +200,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 0.0,
-        "Y": 0.0
+        "X": -134.39094314649719,
+        "Y": 5.2961948038028481
       },
       {
         "ShowGeometry": true,
@@ -188,6 +222,16 @@
         "Excluded": false,
         "X": 218.22222222222263,
         "Y": 104.88888888888884
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "7fae487e82b94c42ab70f352593c02d2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 594.34612035107148,
+        "Y": 209.69904735667498
       }
     ],
     "Annotations": [],

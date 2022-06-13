@@ -1,7 +1,7 @@
 {
   "Uuid": "b26bdb06-d78a-11ec-9d64-0242ac120002",
   "IsCustomNode": true,
-  "Category": "Antler.Revit.Collect",
+  "Category": "Antler.Revit.Collect.Query",
   "Description": "Returns elements and corresponding geometry found at intersection of ray from input Point and direction Vector.",
   "Name": "ReferenceIntersectorFindNearest",
   "ElementResolver": {
@@ -634,7 +634,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nintersector = IN[0]\r\norigin_pts = IN[1]\r\ndirection = IN[2]\r\n\r\nif direction:\r\n\tdirection = direction.ToRevitType()\r\n\r\n\r\n# Place your code below this line\r\ndef find_nearest(\r\n\tintersector, origin_xyz, direction=DB.XYZ(0,0,-1)):\r\n\r\n\treference_with_context = intersector.FindNearest(origin_xyz, direction)\r\n\r\n\tif reference_with_context:\r\n\t\treference = reference_with_context.GetReference()\r\n\t\t\r\n\t\tproximity = reference_with_context.Proximity\r\n\r\n\t\treturn reference, proximity\r\n\telse:\r\n\t\treturn None, None\r\n\r\nresult = []\r\n\r\n\r\nfor origin_pt in origin_pts:\r\n\torigin_xyz = origin_pt.ToRevitType()\r\n\t\r\n\tresult.append(find_nearest(\r\n\t\tintersector, \r\n\t\torigin_xyz,\r\n\t\tdirection\r\n\t\t))\r\n\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nintersector = IN[0]\r\norigin_pts = IN[1]\r\ndirection = IN[2]\r\n\r\nif direction:\r\n\tdirection = direction.ToRevitType()\r\n\r\n\r\n# Place your code below this line\r\ndef find_nearest(\r\n\tintersector, origin_xyz, direction=DB.XYZ(0,0,-1)):\r\n\r\n\treference_with_context = intersector.FindNearest(origin_xyz, direction)\r\n\r\n\tif reference_with_context:\r\n\t\treference = reference_with_context.GetReference()\r\n\t\t\r\n\t\tproximity = reference_with_context.Proximity\r\n\r\n\t\treturn reference, proximity\r\n\telse:\r\n\t\treturn None, None\r\n\r\nresult = []\r\n\r\n\r\nfor origin_pt in origin_pts:\r\n\torigin_xyz = origin_pt.ToRevitType()\r\n\t\r\n\tresult.append(find_nearest(\r\n\t\tintersector, \r\n\t\torigin_xyz,\r\n\t\tdirection=direction\r\n\t\t))\r\n\r\n\r\n# Assign your output to the OUT variable.\r\nOUT = result",
       "VariableInputPorts": true,
       "Id": "45e07d91f42346ff99914e1e76f31670",
       "Inputs": [
@@ -791,7 +791,16 @@
   "Dependencies": [
     "5942f2e6-bb1d-4733-8146-1678daa81eb8"
   ],
-  "NodeLibraryDependencies": [],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "Antler",
+      "Version": "0.1.4",
+      "ReferenceType": "Package",
+      "Nodes": [
+        "51fa7370e38842498e4f5bb161427b63"
+      ]
+    }
+  ],
   "Bindings": [],
   "View": {
     "Dynamo": {
@@ -1037,8 +1046,8 @@
       }
     ],
     "Annotations": [],
-    "X": -316.33099946529433,
-    "Y": 5.942203503225528,
-    "Zoom": 0.60557205756481736
+    "X": -1326.8148053850832,
+    "Y": -429.85142115627025,
+    "Zoom": 1.0997216490318797
   }
 }

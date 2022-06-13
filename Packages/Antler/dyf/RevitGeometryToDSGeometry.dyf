@@ -1,7 +1,7 @@
 {
   "Uuid": "7ab19ae9-5c38-43f0-81de-10fd276e748c",
   "IsCustomNode": true,
-  "Category": "Antler.Geometry",
+  "Category": "Antler.Geometry.Actions",
   "Description": "Converts Revit geometry to Dynamo geometry.",
   "Name": "RevitGeometryToDSGeometry",
   "ElementResolver": {

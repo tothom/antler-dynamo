@@ -1,0 +1,297 @@
+{
+  "Uuid": "ac0fca53-bc6d-43a1-8fa0-a79eac5cb594",
+  "IsCustomNode": true,
+  "Category": "Antler.Geometry.Surfaces.Solids.Pipe.Create",
+  "Description": "Returns a round pipe solid from input curve and radius. Due to bug in Dynamo this node outputs both Revit solids and DesignScript solids. In Dynamo use ds_solid, and if you need the solid in another Python script, use revit_solid.",
+  "Name": "PipeCurve",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\n#import Autodesk\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import List\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\n#clr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nimport math\r\n\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nsolids = IN[0]\r\n\r\ndef process(item):\r\n\tif isinstance(item, (list, tuple)):\r\n\t\treturn [process(a) for a in item]\r\n\telse:\r\n\t\treturn item.ToProtoType()\r\n\r\n\r\nOUT = process(solids)\r\n",
+      "VariableInputPorts": true,
+      "Id": "628f7ad29c514457877b62d94904a8b7",
+      "Inputs": [
+        {
+          "Id": "2dec44b4c1bb4bd382a75bfc41d95572",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6a5a0fc282974c249cec62e549858bd2",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\n#import Autodesk\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import List\r\nfrom System.Collections.Generic import List\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\n#clr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nimport math\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\ncrvs = IN[0]\r\nradius = IN[1]\r\n\r\n\r\nif doc.DisplayUnitSystem == DB.DisplayUnit.METRIC:\r\n\tradius = radius/304.8\r\n\r\n\r\n\r\n\r\ndef pipe_from_crv(crv, radius):\r\n\tderivatives = crv.ComputeDerivatives(crv.GetEndParameter(0), True)\r\n\t\r\n\ttangent = derivatives.BasisX\r\n\r\n\tplane = DB.Plane.CreateByNormalAndOrigin(\r\n\t\ttangent, \r\n\t\tcrv.GetEndPoint(0))\r\n\t\r\n\tpath = DB.CurveLoop.Create(\r\n\t\tList[DB.Curve]([crv]))\r\n\t\r\n\tcircle0 = DB.Arc.Create(plane, radius, 0, math.pi)\r\n\tcircle1 = DB.Arc.Create(plane, radius, math.pi, 2.0*math.pi)\r\n\t\r\n\tprofiles = DB.CurveLoop.Create(\r\n\t\tList[DB.Curve]([circle0, circle1]))\r\n\t\r\n\tpipe = DB.GeometryCreationUtilities.CreateSweptGeometry(\r\n\t\tpath, 0, 0, List[DB.CurveLoop]([profiles]))\r\n\t\r\n\treturn pipe\r\n\t\r\n\r\npipes = []\r\n\r\nfor crv in crvs:\r\n\tpipe = pipe_from_crv(crv.ToRevitType(), radius)\r\n\t\r\n\tpipes.append(pipe)\r\n\t\r\n\r\n\r\nOUT = pipes \r\n",
+      "VariableInputPorts": true,
+      "Id": "27f3be68ef9c424c87f8b2bcdc34aa49",
+      "Inputs": [
+        {
+          "Id": "4dc71444e6214b99b4377f897cdbbe3c",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "700f3e6a5f224b149d8f8437ed19ca88",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5508cb7426e3423cb5be729d88199cd0",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "curve",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "897f0b4ca38d4263b8a35ba00e1e3bcd",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "fa3ba4a8580a4d1cb43da5bbd77e26ba",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "radius",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "4e70b3c994244438a9cc24cc3ab8df22",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "344a9101f73043eb9efde5285c86e99d",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "ds_solid",
+      "Id": "a6e4a8cb720a4afc912a423edc46ff46",
+      "Inputs": [
+        {
+          "Id": "527091d16d6e417aa6eed00dbac2fc50",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "revit_solid",
+      "Id": "1230b73c1c7c400b8b18a8b78e96cf4a",
+      "Inputs": [
+        {
+          "Id": "1d5e1cf34535415ab8b2e63976025e37",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "6a5a0fc282974c249cec62e549858bd2",
+      "End": "527091d16d6e417aa6eed00dbac2fc50",
+      "Id": "b61ec3f467264f9abc869b8a17608743"
+    },
+    {
+      "Start": "5508cb7426e3423cb5be729d88199cd0",
+      "End": "2dec44b4c1bb4bd382a75bfc41d95572",
+      "Id": "aefc45ccca7a4eef9db98e2e765f2f2f"
+    },
+    {
+      "Start": "5508cb7426e3423cb5be729d88199cd0",
+      "End": "1d5e1cf34535415ab8b2e63976025e37",
+      "Id": "cd3571ab06e14777a86cd4bb7e4dd635"
+    },
+    {
+      "Start": "fa3ba4a8580a4d1cb43da5bbd77e26ba",
+      "End": "4dc71444e6214b99b4377f897cdbbe3c",
+      "Id": "8acf889355e04a6994590524d3c9fd6f"
+    },
+    {
+      "Start": "344a9101f73043eb9efde5285c86e99d",
+      "End": "700f3e6a5f224b149d8f8437ed19ca88",
+      "Id": "a93782129a5e4c5aa3bdc742e2acadaf"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -11164.251816120322,
+      "EyeY": 17615.171869075468,
+      "EyeZ": -35073.188383326924,
+      "LookX": 4635.9860682387352,
+      "LookY": -9204.4758953541841,
+      "LookZ": -7811.1915007530406,
+      "UpX": 0.27797470593301388,
+      "UpY": 0.838670567945438,
+      "UpZ": -0.46836069575014511
+    },
+    "NodeViews": [
+      {
+        "Id": "628f7ad29c514457877b62d94904a8b7",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 491.10187501251744,
+        "Y": 0.0
+      },
+      {
+        "Id": "27f3be68ef9c424c87f8b2bcdc34aa49",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 45.558732681164429
+      },
+      {
+        "Id": "897f0b4ca38d4263b8a35ba00e1e3bcd",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 0.0
+      },
+      {
+        "Id": "4e70b3c994244438a9cc24cc3ab8df22",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Input",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 0.0,
+        "Y": 150.0
+      },
+      {
+        "Id": "a6e4a8cb720a4afc912a423edc46ff46",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 690.10187501251744,
+        "Y": -1.0
+      },
+      {
+        "Id": "1230b73c1c7c400b8b18a8b78e96cf4a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": 690.10187501251744,
+        "Y": 150.0
+      }
+    ],
+    "Annotations": [],
+    "X": 418.0,
+    "Y": 113.0,
+    "Zoom": 1.0
+  }
+}

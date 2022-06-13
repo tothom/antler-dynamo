@@ -1,30 +1,14 @@
 {
-  "Uuid": "3278047b-a8c5-4b07-84cf-86d659b2b420",
+  "Uuid": "3d0d372a-a18e-4e2a-a527-08093cf8c263",
   "IsCustomNode": true,
-  "Category": "Antler.Utilities.Query",
-  "Description": "Finds subfolders in input folder with given name. Node will search recursively and return all folders with given name.",
-  "Name": "FindSubfoldersByName",
+  "Category": "Antler.List.Modify.Actions",
+  "Description": "Does the opposite of FilterByBoolMask. It weaves  two lists together based on a bool mask.",
+  "Name": "UnfilterByBoolMask",
   "ElementResolver": {
     "ResolutionMap": {
-      "CoordinateSystem": {
-        "Key": "Autodesk.DesignScript.Geometry.CoordinateSystem",
-        "Value": "ProtoGeometry.dll"
-      },
-      "Geometry": {
-        "Key": "Autodesk.DesignScript.Geometry.Geometry",
-        "Value": "ProtoGeometry.dll"
-      },
-      "Point": {
-        "Key": "Autodesk.DesignScript.Geometry.Point",
-        "Value": "ProtoGeometry.dll"
-      },
-      "Plane": {
-        "Key": "Autodesk.DesignScript.Geometry.Plane",
-        "Value": "ProtoGeometry.dll"
-      },
-      "Vector": {
-        "Key": "Autodesk.DesignScript.Geometry.Vector",
-        "Value": "ProtoGeometry.dll"
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
       }
     }
   },
@@ -34,12 +18,12 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Load the Python Standard and DesignScript Libraries\r\n#import sys\r\nimport os\r\n#import clr\r\n\r\npaths = IN[0]\r\nsubfolder = IN[1]\r\n\r\n\r\n\r\ndef find_subfolder(path, subfolder):\r\n\tfor root, dirs, files in os.walk(path):\r\n\t\tif subfolder in dirs:\r\n\t\t\tyield os.path.join(root, subfolder)\r\n\r\n\r\nfound_paths = []\r\n\r\n\r\nif isinstance(paths, (list, tuple)):\r\n\t[found_paths.extend(find_subfolder(path, subfolder)) for path in paths]\r\nelse:\r\n\tfound_paths.append(find_subfolder(paths, subfolder))\r\n\r\n\r\n\r\n\r\nOUT = found_paths",
+      "Code": "in_list = IN[0]\r\nout_list = IN[1]\r\n\r\nmask = IN[2]\r\n\r\nnew_list = []\r\n\r\nfor a in mask:\r\n\tif a:\r\n\t\tnew_list.append(in_list.pop(0))\r\n\telse:\r\n\t\tnew_list.append(out_list.pop(0))\r\n\t\t\r\nOUT = new_list",
       "VariableInputPorts": true,
-      "Id": "da8cb3846d1c4c728fb1a903011df13a",
+      "Id": "0464aee9d20c48a19cee10dfef94ad5f",
       "Inputs": [
         {
-          "Id": "d9c9ffa7ab944dd3a4dc0c9511b4e304",
+          "Id": "f188087eea9a47fc91507e6ccc62b058",
           "Name": "IN[0]",
           "Description": "Input #0",
           "UsingDefaultValue": false,
@@ -48,9 +32,18 @@
           "KeepListStructure": false
         },
         {
-          "Id": "b028cad9920d448a927261192d9b0655",
+          "Id": "e8d036c412914b538169cff7cb15d54f",
           "Name": "IN[1]",
           "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e847e2422c2444a8891bfe3981e0f106",
+          "Name": "IN[2]",
+          "Description": "Input #2",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -59,7 +52,7 @@
       ],
       "Outputs": [
         {
-          "Id": "a0c3f66a1984453b8db2aa8890613726",
+          "Id": "e19455defcd042aebb1848bcd9e33333",
           "Name": "OUT",
           "Description": "Result of the python script",
           "UsingDefaultValue": false,
@@ -75,17 +68,17 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
       "NodeType": "InputNode",
       "Parameter": {
-        "Name": "folder",
+        "Name": "in_",
         "TypeName": "var",
         "TypeRank": -1,
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "e667d1c0f45b44aaa1d3ee4b5aea59cd",
+      "Id": "acdce5130ada4435b3d7bd069d774297",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "caf0840af8c44f59840ead88378bbcb9",
+          "Id": "f962185ef96c440bb8d55282f3908f4f",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -101,17 +94,43 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
       "NodeType": "InputNode",
       "Parameter": {
-        "Name": "subfolder_name",
+        "Name": "out_",
         "TypeName": "var",
         "TypeRank": -1,
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "8855fc0157494c8582bd8faa55a22b6e",
+      "Id": "8d6ae1e818594ee09c84c0525d1cb917",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "c19efdb5401d4076b7ea825b8c4d5e63",
+          "Id": "01210144a4f14f75a35fb3af8c7981e7",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "mask",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "908c9be72972495a8873b551d04ff26a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c8be2b7a8236488e87a2d7f8ca247314",
           "Name": "",
           "Description": "Symbol",
           "UsingDefaultValue": false,
@@ -127,11 +146,11 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
       "NodeType": "OutputNode",
       "ElementResolver": null,
-      "Symbol": "folders",
-      "Id": "70a45a6433dc49b0b7053bc20e21dcb2",
+      "Symbol": "list",
+      "Id": "cafb3de8183d4181ba8125b195e559a5",
       "Inputs": [
         {
-          "Id": "9a85bf6c5bbd48318cbb714156ea4f6a",
+          "Id": "f229cdcb0d8b42bd8aa235969fca68bd",
           "Name": "",
           "Description": "",
           "UsingDefaultValue": false,
@@ -147,19 +166,24 @@
   ],
   "Connectors": [
     {
-      "Start": "a0c3f66a1984453b8db2aa8890613726",
-      "End": "9a85bf6c5bbd48318cbb714156ea4f6a",
-      "Id": "1d8e345b9dbd41e6b2f9dd19110ed5cf"
+      "Start": "e19455defcd042aebb1848bcd9e33333",
+      "End": "f229cdcb0d8b42bd8aa235969fca68bd",
+      "Id": "1f43c66af2d04649a6a89b5b723e5412"
     },
     {
-      "Start": "caf0840af8c44f59840ead88378bbcb9",
-      "End": "d9c9ffa7ab944dd3a4dc0c9511b4e304",
-      "Id": "a1d60f40b59f4bf683082cd1f0559068"
+      "Start": "f962185ef96c440bb8d55282f3908f4f",
+      "End": "f188087eea9a47fc91507e6ccc62b058",
+      "Id": "6e601ac4431f4ed38523099ebb82cc40"
     },
     {
-      "Start": "c19efdb5401d4076b7ea825b8c4d5e63",
-      "End": "b028cad9920d448a927261192d9b0655",
-      "Id": "1782e4d5261744e2bd2ff765dc7d920b"
+      "Start": "01210144a4f14f75a35fb3af8c7981e7",
+      "End": "e8d036c412914b538169cff7cb15d54f",
+      "Id": "68e13f393c464d04b0122b3df913ae17"
+    },
+    {
+      "Start": "c8be2b7a8236488e87a2d7f8ca247314",
+      "End": "e847e2422c2444a8891bfe3981e0f106",
+      "Id": "a8723bbf2766469ba05d939ec3394cfe"
     }
   ],
   "Dependencies": [],
@@ -170,7 +194,7 @@
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.3.0.5885",
+      "Version": "2.6.1.8786",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
@@ -190,17 +214,17 @@
       {
         "ShowGeometry": true,
         "Name": "Python Script",
-        "Id": "da8cb3846d1c4c728fb1a903011df13a",
+        "Id": "0464aee9d20c48a19cee10dfef94ad5f",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 250.0,
-        "Y": 0.0
+        "X": 254.0,
+        "Y": 21.0
       },
       {
         "ShowGeometry": true,
         "Name": "Input",
-        "Id": "e667d1c0f45b44aaa1d3ee4b5aea59cd",
+        "Id": "acdce5130ada4435b3d7bd069d774297",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
@@ -210,7 +234,7 @@
       {
         "ShowGeometry": true,
         "Name": "Input",
-        "Id": "8855fc0157494c8582bd8faa55a22b6e",
+        "Id": "8d6ae1e818594ee09c84c0525d1cb917",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
@@ -219,18 +243,28 @@
       },
       {
         "ShowGeometry": true,
-        "Name": "Output",
-        "Id": "70a45a6433dc49b0b7053bc20e21dcb2",
+        "Name": "Input",
+        "Id": "908c9be72972495a8873b551d04ff26a",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 449.5,
+        "X": 0.0,
+        "Y": 300.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "cafb3de8183d4181ba8125b195e559a5",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 448.99999999999977,
         "Y": 0.0
       }
     ],
     "Annotations": [],
-    "X": 0.0,
-    "Y": 0.0,
+    "X": 194.0,
+    "Y": 318.0,
     "Zoom": 1.0
   }
 }

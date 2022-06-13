@@ -1,7 +1,7 @@
 {
   "Uuid": "34c76e47-7ef0-480a-9987-a8b929944aaa",
   "IsCustomNode": true,
-  "Category": "Antler.Document.Query",
+  "Category": "Antler.Revit.Document.Query",
   "Description": "Gets all open documents, including Links.",
   "Name": "All open Documents",
   "ElementResolver": {
@@ -13,7 +13,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit.DB import *\r\nimport Autodesk.Revit.ApplicationServices\r\n\r\nclr.AddReference('RevitAPIUI')\r\nimport Autodesk.Revit.UI\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n\r\n\r\n# Code\r\n#doc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\n#app = Autodesk.Revit.UI.UIApplicatio\r\n\r\ndocs = app.Documents #.ForwardIterator()\r\n\r\ntitles = [doc.Title for doc in docs]\r\npaths = [doc.PathName for doc in docs]\r\nis_linked = [doc.IsLinked for doc in docs]\r\nis_family_doc = [doc.IsFamilyDocument for doc in docs]\r\n\r\n\"\"\"\r\ndocs = []\r\n\r\n#iter = Application.Documents#.ForwardIterator()\r\ni = 0\r\n\r\nwhile iter and i < 5:\r\n\titer.MoveNext()\r\n\tdocs.append(iter.Current)\r\n\t#iter.MoveNext()\r\n\ti += 1\r\n\"\"\"\r\n# Assign your output to the OUT variable.\r\nOUT = docs, titles, paths, is_linked, is_family_doc",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit.DB import *\r\nimport Autodesk.Revit.ApplicationServices\r\n\r\nclr.AddReference('RevitAPIUI')\r\nimport Autodesk.Revit.UI\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n\r\n\r\n# Code\r\n#doc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\n#app = Autodesk.Revit.UI.UIApplicatio\r\n\r\ndocs = app.Documents #.ForwardIterator()\r\n\r\ntitles = [doc.Title for doc in docs]\r\npaths = [doc.PathName for doc in docs]\r\nis_linked = [doc.IsLinked for doc in docs]\r\nis_family_doc = [doc.IsFamilyDocument for doc in docs]\r\n\r\n#docs = [doc.ToDSType(True) for doc in docs]\r\n\r\n\"\"\"\r\ndocs = []\r\n\r\n#iter = Application.Documents#.ForwardIterator()\r\ni = 0\r\n\r\nwhile iter and i < 5:\r\n\titer.MoveNext()\r\n\tdocs.append(iter.Current)\r\n\t#iter.MoveNext()\r\n\ti += 1\r\n\"\"\"\r\n# Assign your output to the OUT variable.\r\nOUT = docs, titles, paths, is_linked, is_family_doc",
       "VariableInputPorts": true,
       "Id": "2b5dfd571cff42bea8c6b8446403745e",
       "Inputs": [],
@@ -201,6 +201,35 @@
       "Outputs": [],
       "Replication": "Disabled",
       "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "dfd1f4147c80435689f5752e5ab3e72c",
+      "Inputs": [
+        {
+          "Id": "6dd2ec02bd58416d8a2daf29bd11f935",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "035588959b7e41e4b3c0983bba548095",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
     }
   ],
   "Connectors": [
@@ -208,6 +237,11 @@
       "Start": "854255948482470889b20001b0fc20de",
       "End": "4e2675c8f836420d99f5f74727be9fa9",
       "Id": "d7bf95bead9a49cf9e0cd03dfbcb23de"
+    },
+    {
+      "Start": "854255948482470889b20001b0fc20de",
+      "End": "6dd2ec02bd58416d8a2daf29bd11f935",
+      "Id": "fe13fac766b1499eb52dd7aed5a2eb28"
     },
     {
       "Start": "393a77813c1f4a1e8f5d380a8955da4b",
@@ -236,27 +270,28 @@
     }
   ],
   "Dependencies": [],
+  "NodeLibraryDependencies": [],
   "Bindings": [],
   "View": {
     "Dynamo": {
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.0.2.6826",
+      "Version": "2.6.1.8786",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -17.0,
-      "EyeY": 24.0,
-      "EyeZ": 50.0,
-      "LookX": 12.0,
-      "LookY": -13.0,
-      "LookZ": -58.0,
-      "UpX": 0.0,
-      "UpY": 1.0,
-      "UpZ": 0.0
+      "EyeX": 256848.92338807168,
+      "EyeY": 85882.281437344674,
+      "EyeZ": -56768.93964627591,
+      "LookX": -28394.396228823462,
+      "LookY": -55461.93279763285,
+      "LookZ": -58708.828079059524,
+      "UpX": -0.20440704504484139,
+      "UpY": 0.88294759285894053,
+      "UpZ": -0.422636141616717
     },
     "NodeViews": [
       {
@@ -328,11 +363,21 @@
         "Excluded": false,
         "X": 642.6061045859484,
         "Y": 302.93438379195265
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "dfd1f4147c80435689f5752e5ab3e72c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 783.18997539834209,
+        "Y": -223.35286478049295
       }
     ],
     "Annotations": [],
-    "X": 5.8458238863872793,
-    "Y": 92.733736333862055,
-    "Zoom": 1.2708166697477596
+    "X": 123.82911049931101,
+    "Y": 391.11105700189728,
+    "Zoom": 1.5822710903284773
   }
 }
