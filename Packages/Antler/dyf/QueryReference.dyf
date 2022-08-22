@@ -1,7 +1,7 @@
 {
   "Uuid": "5942f2e6-bb1d-4733-8146-1678daa81eb8",
   "IsCustomNode": true,
-  "Category": "Antler.Revit.Elements",
+  "Category": "Antler.Revit.Elements.Reference.Query",
   "Description": "Returns Element, Point, Geometry from input Reference.",
   "Name": "QueryReference",
   "ElementResolver": {
