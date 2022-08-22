@@ -90,7 +90,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# For working with DesignScript abstract geometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\n\r\ndef transform_to_coordinatesystem(transform):\r\n\torigin = transform.Origin\r\n\torigin_pt = Point.ByCoordinates(origin.X, origin.Y, origin.Z)\r\n\t\r\n\tbasisX = transform.BasisX\r\n\tvectorX = Vector.ByCoordinates(basisX.X,basisX.Y,basisX.Z)\r\n\t\r\n\tbasisY = transform.BasisY\r\n\tvectorY = Vector.ByCoordinates(basisY.X,basisY.Y,basisY.Z)\t\r\n\t\r\n\tbasisZ = transform.BasisZ\r\n\tvectorZ = Vector.ByCoordinates(basisZ.X,basisZ.Y,basisZ.Z)\t\t\r\n\t\r\n\tcoordinate_system = CoordinateSystem.ByOriginVectors(origin_pt, vectorX, vectorY, vectorZ)\r\n\t\r\n\treturn coordinate_system\r\n\t\r\n\t\r\n\t\r\n\treturn cs\r\n\r\ndef function(element):\r\n\tif isinstance(element, (list, tuple)):\r\n\t\treturn [function(e) for e in element]\r\n\telse:\r\n\t\t# Code follows here:\r\n\t\telement = UnwrapElement(element)\r\n\t\t\r\n\t\ttransform = element.GetTransform()\r\n\t\t\r\n\t\tcs = transform_to_coordinatesystem(transform)\r\n\t\t\r\n\t\treturn cs\r\n\r\nOUT = function(elements)",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# For working with DesignScript abstract geometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef function(element):\r\n\telement = UnwrapElement(element)\r\n\t\r\n\ttransform = element.GetTransform()\r\n\t\r\n\tcoordinate_system = transform.ToCoordinateSystem()\r\n\t\r\n\treturn coordinate_system\t\r\n\r\n\r\ndef process(item):\r\n\tif isinstance(item, (list, tuple)):\r\n\t\treturn [process(e) for e in item]\r\n\telse:\r\n\t\ttry:\r\n\t\t\treturn function(item)\r\n\t\texcept:\r\n\t\t\treturn\r\n\r\n\r\nOUT = process(elements)",
       "VariableInputPorts": true,
       "Id": "c160e9c3162b4957b6ae766220949bba",
       "Inputs": [
@@ -192,15 +192,15 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 4718.4550795585556,
-      "EyeY": 1395.4289556713272,
-      "EyeZ": 2425.2564921256585,
-      "LookX": -3928.4550795585556,
-      "LookY": -475.42895567132723,
-      "LookZ": -2425.2564921256585,
-      "UpX": 0.096325587271948079,
-      "UpY": 0.99357185567661366,
-      "UpZ": 0.059467208141105538
+      "EyeX": -8014.2937336541718,
+      "EyeY": 14555.838065946698,
+      "EyeZ": -35009.140219795969,
+      "LookX": 4193.3039410969986,
+      "LookY": -4978.4994971350443,
+      "LookZ": -5946.7294398820959,
+      "UpX": 0.215878546440144,
+      "UpY": 0.92718385456682162,
+      "UpZ": -0.30614792669160462
     },
     "NodeViews": [
       {
@@ -210,8 +210,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 250.0,
-        "Y": 0.0
+        "X": 219.47680864770291,
+        "Y": -18.783502370644356
       },
       {
         "ShowGeometry": true,
@@ -220,8 +220,8 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 0.0,
-        "Y": 0.0
+        "X": -172.96475099635018,
+        "Y": -7.8264593211018223
       },
       {
         "ShowGeometry": true,
@@ -235,8 +235,8 @@
       }
     ],
     "Annotations": [],
-    "X": 264.364186228035,
-    "Y": 224.60215417812913,
-    "Zoom": 0.9540429248828125
+    "X": -885.04281042690388,
+    "Y": 143.29438662325535,
+    "Zoom": 4.0
   }
 }
