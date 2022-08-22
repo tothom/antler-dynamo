@@ -1,9 +1,9 @@
 {
   "Uuid": "d269395a-03fc-4c25-ba1e-da7c17e1a3b3",
   "IsCustomNode": true,
-  "Category": "Antler.FamilyInstance",
+  "Category": "Antler.Revit.Elements.FamilyInstance.Query",
   "Description": "Returns True if familyinstance is flipped from direction in family editor",
-  "Name": "FamilyInstance.Flipped",
+  "Name": "Flipped",
   "ElementResolver": {
     "ResolutionMap": {
       "String": {
@@ -18,7 +18,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "#The inputs to this node will be stored as a list in the IN variables.\ndoors = IN[0]\n\nif isinstance(doors, list):\n\tdoors = UnwrapElement(doors)\nelse:\n\tdoors = UnwrapElement([doors])\n\nflip_hand= [a.HandFlipped for a in doors]  \n\n#Assign your output to the OUT variable.\nOUT = flip_hand",
+      "Code": "doors = IN[0]\n\ndef function(element):\n\t\telement = UnwrapElement(element)\n\t\t\n\t\treturn element.HandFlipped\n\ndef process(item):\n\tif isinstance(item, (list, tuple)):\n\t\treturn [process(a) for a in item]\n\telse:\n\t\ttry:\n\t\t\treturn function(item)\n\t\texcept:\n\t\t\treturn\n\nOUT = process(doors)",
       "VariableInputPorts": true,
       "Id": "98634c1e511841fbbae51abc2dc950e7",
       "Inputs": [
@@ -49,7 +49,7 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "#The inputs to this node will be stored as a list in the IN variables.\ndoors = IN[0]\n\nif isinstance(doors, list):\n\tdoors = UnwrapElement(doors)\nelse:\n\tdoors = UnwrapElement([doors])\n\nflip_facing= [a.FacingFlipped for a in doors]  \n\n#Assign your output to the OUT variable.\nOUT = flip_facing",
+      "Code": "doors = IN[0]\n\ndef function(element):\n\t\telement = UnwrapElement(element)\n\t\t\n\t\treturn element.FacingFlipped\n\ndef process(item):\n\tif isinstance(item, (list, tuple)):\n\t\treturn [process(a) for a in item]\n\telse:\n\t\ttry:\n\t\t\treturn function(item)\n\t\texcept:\n\t\t\treturn\n\nOUT = process(doors)",
       "VariableInputPorts": true,
       "Id": "cabd5925195b426db4f3d5f167a5e465",
       "Inputs": [
@@ -176,21 +176,21 @@
       "ScaleFactor": 1.0,
       "HasRunWithoutCrash": false,
       "IsVisibleInDynamoLibrary": true,
-      "Version": "2.3.0.5885",
+      "Version": "2.6.1.8786",
       "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 27600.612781984222,
-      "EyeY": 6269.5059776292192,
-      "EyeZ": -1589.8335660190646,
-      "LookX": -2640.8144356686244,
-      "LookY": -5019.6814864748858,
-      "LookZ": -2635.2318941535464,
-      "UpX": -0.46439435369407139,
-      "UpY": 0.75470950365180367,
-      "UpZ": -0.46341256747665455
+      "EyeX": -8014.2937336541718,
+      "EyeY": 14555.838065946698,
+      "EyeZ": -35009.140219795969,
+      "LookX": 4193.3039410969986,
+      "LookY": -4978.4994971350443,
+      "LookZ": -5946.7294398820959,
+      "UpX": 0.215878546440144,
+      "UpY": 0.92718385456682162,
+      "UpZ": -0.30614792669160462
     },
     "NodeViews": [
       {
@@ -253,13 +253,13 @@
           "cabd5925195b426db4f3d5f167a5e465"
         ],
         "Left": 246.91144708423326,
-        "Top": -96.5,
-        "Width": 210.15559983627418,
-        "Height": 329.61719439590729,
+        "Top": -96.0,
+        "Width": 257.65559983627418,
+        "Height": 329.11719439590729,
         "FontSize": 36.0,
         "InitialTop": 0.0,
         "InitialHeight": 310.11719439590729,
-        "TextblockHeight": 86.5,
+        "TextblockHeight": 86.0,
         "Background": "#FFC1D676"
       }
     ],
