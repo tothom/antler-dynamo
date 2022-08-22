@@ -1,0 +1,373 @@
+{
+  "Uuid": "8cffb58d-0a00-415d-9094-353fc7281b31",
+  "IsCustomNode": true,
+  "Category": "Antler.Geometry.Vectors",
+  "Description": "Returns true if vectors are almost parallel.",
+  "Name": "VectorsAlmostParallel",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "DSCore.List.Empty": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      },
+      "DSCore.List": {
+        "Key": "DSCore.List",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Category": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "Geometry": {
+        "Key": "Autodesk.DesignScript.Geometry.Geometry",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Plane.XZ": {
+        "Key": "Autodesk.DesignScript.Geometry.Plane",
+        "Value": "ProtoGeometry.dll"
+      },
+      "DSCore.Object": {
+        "Key": "DSCore.Object",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Autodesk.DesignScript.Geometry.Solid": {
+        "Key": "Autodesk.DesignScript.Geometry.Solid",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Vector": {
+        "Key": "Autodesk.DesignScript.Geometry.Vector",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Math": {
+        "Key": "DSCore.Math",
+        "Value": "DSCoreNodes.dll"
+      },
+      "Surface": {
+        "Key": "Autodesk.DesignScript.Geometry.Surface",
+        "Value": "ProtoGeometry.dll"
+      },
+      "PolyCurve": {
+        "Key": "Autodesk.DesignScript.Geometry.PolyCurve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Point.A": {
+        "Key": "Autodesk.DesignScript.Geometry.Point",
+        "Value": "ProtoGeometry.dll"
+      },
+      "DesignScript.Curve.Reverse": {
+        "Key": "Autodesk.DesignScript.Geometry.Curve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "DesignScript.Curve": {
+        "Key": "Autodesk.DesignScript.Geometry.Curve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "Autodesk.DesignScript.Geometry.Curve.Reverse": {
+        "Key": "Autodesk.DesignScript.Geometry.Curve",
+        "Value": "ProtoGeometry.dll"
+      },
+      "List": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      },
+      "Dictionary": {
+        "Key": "DesignScript.Builtin.Dictionary",
+        "Value": "DesignScriptBuiltin.dll"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "vectors_are_almost_equal(\n\ta,\n\tb,\n\tangle_tolerance);",
+      "Id": "e965999d6c054917bf1f8324d44314a8",
+      "Inputs": [
+        {
+          "Id": "cd62aaa0495640eab5f75292039a59ee",
+          "Name": "a",
+          "Description": "a",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "dd55f416209d4d51a2b9c7d3690f2e85",
+          "Name": "b",
+          "Description": "b",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a88d627c8ee14a5e91f7a562d8ec0377",
+          "Name": "angle_tolerance",
+          "Description": "angle_tolerance",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "df781d3a66ab4a469bf777b16c0be28f",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "def vectors_are_almost_equal (\n\ta, b, tolerance)\n\n\t{\n\tangle = Vector.AngleWithVector(\n\t\ta, b);\n\n\treturn Math.Sin(angle) < Math.Sin(tolerance);\n\t};",
+      "Id": "cca25fc19a714f8f93ada88f5eddaf30",
+      "Inputs": [],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "boolean",
+      "Id": "daee771271bb4e45852d0493ab6cbb8b",
+      "Inputs": [
+        {
+          "Id": "d799e9c3ad314d2c956c3a984bf0aa65",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "vector_a",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "33cff40c86bd47e686805da5c18c9bd4",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "43d4f2f300fc40ec98824fde08517c69",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "vector_b",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "83d95ec2937141d6973fdcc4730520df",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "adef3fa777064237bee906b6fa037d7f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "angle_tolerance",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "40e05edbc577430f925d4a09b6ca7a01",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "172c881a9fa1455797a91f912e013873",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "def lines_are_almost_parallel (\n\ta, b, tolerance=0.1 )\n\t{\n\n\treturn vectors_are_almost_equal(\n\t\ta, b, tolerance);\n\t};",
+      "Id": "606edb08d08d4355b9e4a74b17b150f1",
+      "Inputs": [],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "df781d3a66ab4a469bf777b16c0be28f",
+      "End": "d799e9c3ad314d2c956c3a984bf0aa65",
+      "Id": "1b022f3382174707b78d229c5e1eea38"
+    },
+    {
+      "Start": "43d4f2f300fc40ec98824fde08517c69",
+      "End": "cd62aaa0495640eab5f75292039a59ee",
+      "Id": "1d138e680e3f4214b65afe58fd7ab171"
+    },
+    {
+      "Start": "adef3fa777064237bee906b6fa037d7f",
+      "End": "dd55f416209d4d51a2b9c7d3690f2e85",
+      "Id": "e14f7f662df342c8913bd7fec99fe915"
+    },
+    {
+      "Start": "172c881a9fa1455797a91f912e013873",
+      "End": "a88d627c8ee14a5e91f7a562d8ec0377",
+      "Id": "083df03e16e9470d96e1fc9bcb26a670"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -20688.02570498694,
+      "EyeY": 38032.138785092378,
+      "EyeZ": -22497.335992135508,
+      "LookX": 4419.4252794028253,
+      "LookY": -23144.185738442524,
+      "LookZ": -14740.64791067451,
+      "UpX": 0.19949393430877316,
+      "UpY": 0.71933980033897893,
+      "UpZ": -0.66539643959296713
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": false,
+        "Name": "Code Block",
+        "Id": "e965999d6c054917bf1f8324d44314a8",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 231.71498219939588,
+        "Y": 357.70446550531312
+      },
+      {
+        "ShowGeometry": false,
+        "Name": "Code Block",
+        "Id": "cca25fc19a714f8f93ada88f5eddaf30",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 290.35608308605333,
+        "Y": -46.290801186943611
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "daee771271bb4e45852d0493ab6cbb8b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 792.946587537092,
+        "Y": 316.91394658753711
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "33cff40c86bd47e686805da5c18c9bd4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -108.05637982195867,
+        "Y": 177.78338278931756
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "83d95ec2937141d6973fdcc4730520df",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -141.29080118694372,
+        "Y": 320.21661721068244
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "40e05edbc577430f925d4a09b6ca7a01",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -142.47774480712178,
+        "Y": 451.96735905044511
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "606edb08d08d4355b9e4a74b17b150f1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 762.42136498516311,
+        "Y": -17.804154302670639
+      }
+    ],
+    "Annotations": [],
+    "X": 130.91250000000002,
+    "Y": 80.0925,
+    "Zoom": 0.8425
+  }
+}

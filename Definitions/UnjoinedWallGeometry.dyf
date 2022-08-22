@@ -1,0 +1,165 @@
+{
+  "Uuid": "d83fea1c-37b7-410a-aef6-2b0c6cccb421",
+  "IsCustomNode": true,
+  "Category": "Antler.Revit.Elements.Walls",
+  "Description": "Returns wall geometry as if it's not allowed to join.",
+  "Name": "UnjoinedWallGeometry",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Enable Python support and load DesignScript library\r\nimport clr\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nfrom Autodesk.Revit import DB\r\n\r\n# Import ToDSType(bool) extension method\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n\r\n# Import DocumentManager and TransactionManager\r\nclr.AddReference (\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n\r\n#The inputs to this node will be stored as a list in the IN variable.\r\nelements = IN[0]\r\n\r\ndef valid_solid_filter(geometry_object):\r\n\tif isinstance(geometry_object, DB.Solid) and\\\r\n\t\tgeometry_object.Faces.Size > 0 and\\\r\n\t\tgeometry_object.Edges.Size > 0 and\\\r\n\t\tgeometry_object.Volume > 0:\r\n\t\treturn True\r\n\telse:\r\n\t\treturn False\r\n\t\t\r\n\r\n\t\t\r\ndef get_solids(element):\r\n\tsolids = []\r\n\t\r\n\toptions = DB.Options()\r\n\t\r\n\tgeometry_element = element.get_Geometry(options)\r\n\t\r\n\tfor geometry_object in geometry_element:\r\n\r\n\t\tif valid_solid_filter(geometry_object):\r\n\r\n\t\t\tsolids.append(geometry_object.ToProtoType())\r\n\t\t\t\r\n\treturn solids\r\n\r\n\r\n\r\n\r\ndef function(element):\r\n\telement = UnwrapElement(element)\r\n\t\r\n\tst = DB.SubTransaction(doc)\r\n\t\r\n\ttry:\r\n\t\tst.Start()\r\n\t\t\r\n\t\tDB.WallUtils.DisallowWallJoinAtEnd(element, 0)\r\n\t\tDB.WallUtils.DisallowWallJoinAtEnd(element, 1)\r\n\t\t\r\n\t\tsolids = get_solids(element)\r\n\t\t\r\n\texcept Exception as e:\r\n\t\traise e\r\n\telse:\r\n\t\treturn solids\r\n\tfinally:\r\n\t\tpass\r\n\t\tst.RollBack()\r\n\t\tst.Dispose()\r\n\t\t\r\n\t\t\t\r\n\r\ndef process(item):\r\n\tif isinstance(item, (list, tuple)):\r\n\t\treturn [process(a) for a in item]\r\n\telif item:\r\n\t\treturn function(item)\r\n\t\t\r\n\r\nt = DB.Transaction(doc, \"Get unjoined geometry\")\r\n\r\ntry:\r\n\tt.Start()\r\n\t\r\n\tgeometry = process(elements)\r\nexcept Exception as e:\r\n\traise e\r\nelse:\r\n\tOUT = geometry\r\nfinally:\r\n\tt.RollBack()\r\n\tt.Dispose()\r\n",
+      "VariableInputPorts": true,
+      "Id": "9f659018512e421383e035cb42487e49",
+      "Inputs": [
+        {
+          "Id": "55f8f94f53da44998dcfd49974d2b825",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "cbb40c45d7684ae696b3a49b81b01381",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "walls",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "beb06ad4cf464debb64b86bd0f751244",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "752d301138f04a469868488e3754cf3f",
+          "Name": "",
+          "Description": "Symbol",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "geometry",
+      "Id": "0fb2d4ec51cf4a90962b6cac767a2efb",
+      "Inputs": [
+        {
+          "Id": "35e0b17f4909436080c4b08131d1c872",
+          "Name": "",
+          "Description": "",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "cbb40c45d7684ae696b3a49b81b01381",
+      "End": "35e0b17f4909436080c4b08131d1c872",
+      "Id": "e452a5e1931f47b39b72f409e895bcf8"
+    },
+    {
+      "Start": "752d301138f04a469868488e3754cf3f",
+      "End": "55f8f94f53da44998dcfd49974d2b825",
+      "Id": "576e9f69cc8f44eaa8e86a46b70b9dfe"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -24303.840349318307,
+      "EyeY": 35938.349869555146,
+      "EyeZ": -13463.79215026463,
+      "LookX": 9016.6265975190763,
+      "LookY": -23193.450846325941,
+      "LookZ": -14324.053420084814,
+      "UpX": 0.3529904629215061,
+      "UpY": 0.74895572078916783,
+      "UpZ": -0.56077006106246119
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "9f659018512e421383e035cb42487e49",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 250.0,
+        "Y": 0.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Input",
+        "Id": "beb06ad4cf464debb64b86bd0f751244",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -23.195430154059181,
+        "Y": -5.8854076510299507
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Output",
+        "Id": "0fb2d4ec51cf4a90962b6cac767a2efb",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 449.0,
+        "Y": 0.0
+      }
+    ],
+    "Annotations": [],
+    "X": -95.36497127859991,
+    "Y": 263.20692252836153,
+    "Zoom": 2.45244625
+  }
+}
